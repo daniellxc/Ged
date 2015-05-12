@@ -1,0 +1,38 @@
+﻿using LAB5GED.DOMAIN.DAO.Interfaces;
+using LAB5GED.DOMAIN.Entidades;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace LAB5GED.DOMAIN.DAO.Business
+{
+    public class UsuarioBO
+    {
+
+        private class UsuarioDAO : AbstracCrudDAO<Usuario>, IUsuarioDAO
+        {
+
+            public UsuarioDAO()
+            {
+
+            }
+        }
+
+
+        private UsuarioDAO _DAO = new UsuarioDAO();
+
+
+        public Usuario GetUsuario(string _login, string _senha)
+        {
+            return _DAO.Find(u => u.Login == _login && u.Senha == _senha).FirstOrDefault();
+        }
+
+        public Usuario GetByRegistro(int _registro)
+        {
+            return _DAO.Find(u => u.Registro == _registro).FirstOrDefault();
+        }
+
+       
+    }
+}

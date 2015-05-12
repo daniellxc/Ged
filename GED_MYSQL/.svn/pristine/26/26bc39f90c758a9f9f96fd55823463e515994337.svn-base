@@ -1,0 +1,32 @@
+﻿@model List<LAB5GED.DOMAIN.Entidades.Documento>
+@using GridMvc.Html
+
+
+<script src="~/Scripts/jquery-1.7.1.min.js"></script>
+<script src="~/Scripts/jquery-1.7.1.js"></script>
+<script type="text/javascript">
+
+
+    function complete() {
+        
+        window.location.reload();
+    }
+
+</script>
+<h2>Documentos Cadastrados e Não Revisados</h2>
+
+@Html.Grid(new LAB5GED.DOMAIN.DAO.Business.DocumentoBO().GetDocumentosNaoRevisado()).Columns(c=>
+    {
+        c.Add(d => d.Registro).Titled("ID. Documento");
+        c.Add(d => d.DataCriacao).Titled("Data da Captura");
+        c.Add(d => d.FK_Subserie.FK_Serie.Id_serie).Titled("Subsérie").RenderValueAs(d => d.FK_Subserie.Id_subserie + " - " + d.FK_Subserie.Rotulo_subserie);
+        c.Add().Encoded(false).Sanitized(false).RenderValueAs(b => @Html.ActionLink("Visualizar", "Visualizar", new {_registro = b.Registro }));
+        c.Add().Encoded(false).Sanitized(false).RenderValueAs(b => @Html.ActionLink("Revisar", "Revisar", new { _registroDocumento = b.Registro }));
+        c.Add().Encoded(false).Sanitized(false).RenderValueAs(b => @Ajax.ActionLink("Excluir", "Confirmacao", "Mensagem", new { _action = "ExcluirDocumento", _controller = "Documento", _model = new { Id = b.Registro } }, new AjaxOptions
+        {
+            InsertionMode = InsertionMode.Replace,
+            UpdateTargetId = "aux"
+        }, ""));
+    }).WithPaging(10).Sortable(true)
+
+@Html.ActionLink("Voltar","Index","Home","",new{@class="btn btn-primary"})

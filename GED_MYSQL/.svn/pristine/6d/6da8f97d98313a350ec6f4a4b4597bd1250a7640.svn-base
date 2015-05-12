@@ -1,0 +1,13 @@
+﻿@model List<LAB5GED.DOMAIN.Entidades.Documento>
+@using GridMvc.Html
+
+
+@Html.Grid(new LAB5GED.DOMAIN.DAO.Business.DocumentoBO().GetAll()).Columns(c=>
+    {
+        c.Add(d => d.DataCriacao).Titled("Data da Captura");
+        c.Add(d => d.FK_Subserie.FK_Serie.Id_serie).Titled("Subsérie").RenderValueAs(d => d.FK_Subserie.Id_subserie + " - " + d.FK_Subserie.Rotulo_subserie);
+        c.Add().Encoded(false).Sanitized(false).RenderValueAs(b => @Html.ActionLink("Visualizar", "Visualizar", new {_registro = b.Registro }));
+        c.Add().Encoded(false).Sanitized(false).RenderValueAs(b => @Html.ActionLink("Revisar", "Revisar", new { _registroDocumento = b.Registro }));
+    }).WithPaging(10).Sortable(true)
+
+ 

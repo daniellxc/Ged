@@ -1,0 +1,49 @@
+﻿@model List<LAB5GED.DOMAIN.Entidades.Usuario>
+@using GridMvc.Html
+
+<script src="~/Scripts/jquery-1.7.1.min.js"></script>
+<script src="~/Scripts/jquery-1.7.1.js"></script>
+<script type="text/javascript">
+
+
+    function complete() {
+        
+        window.location.reload();
+    }
+
+</script>
+
+<h2>Controle de Usuários do Sistema</h2>
+
+@Html.ActionLink("Cadastrar Novo Usuário","Cadastrar",new LAB5GED.DOMAIN.Entidades.Usuario(),new {@class="btn btn-primary"})        
+
+@Html.Grid(Model).Columns(c=>
+    {
+     
+     c.Add(u=>u.NomeUsuario).Titled("Nome");
+     c.Add(u=> u.Login).Titled("Login");
+     c.Add(u => u.DataCadastro).Titled("Data de Cadastro");
+     c.Add(cl => cl.Ativo).Titled("Ativo").Encoded(false).Sanitized(false).RenderValueAs(cl=>CustomRenderingOfColumn(cl));
+     c.Add().Encoded(false).Sanitized(false).RenderValueAs(b => @Html.ActionLink("Alterar Perfil", "AdicionarAoGrupo", new {_registroUsuario = b.Registro }));
+     c.Add().Encoded(false).Sanitized(false).RenderValueAs(b => @Html.ActionLink("Alterar Senha", "AlterarSenha", new LAB5GED.DOMAIN.DAO.Business.UsuarioBO().GetByRegistro(b.Registro)));  
+     c.Add().Encoded(false).Sanitized(false).RenderValueAs(b => @Html.ActionLink("Editar", "Editar", new { _registroUsuario = b.Registro }));
+     //c.Add().Encoded(false).Sanitized(false).RenderValueAs(b => @Html.ActionLink("Excluir", "ExcluirUsuario", new { _registroUsuario = b.Registro }, new {@OnClick ="confirmacao",@id="delete" })); 
+     c.Add().Encoded(false).Sanitized(false).RenderValueAs(b => @Ajax.ActionLink("Excluir", "ExcluirUsuario", new { _registroUsuario = b.Registro }, new AjaxOptions() 
+                                                                                                                                                                     {
+                                                                                                                                                                     Confirm = "Confirmar exclusão do usuário " + b.NomeUsuario+"?", 
+                                                                                                                                                                     OnComplete="complete" }));     
+     
+    }).WithPaging(10).Sortable(true)
+
+
+@helper CustomRenderingOfColumn(LAB5GED.DOMAIN.Entidades.Usuario item)
+{
+    if (item.Ativo)
+    {
+    <span style="color:green;">SIM</span>
+    }
+    else
+    {
+     <span style="color:red;">NÃO</span>          
+    }
+}

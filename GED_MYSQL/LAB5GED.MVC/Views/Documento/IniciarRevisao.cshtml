@@ -1,0 +1,10 @@
+﻿
+<h2>Conferência de Documentos por Caixa</h2>
+
+<fieldset>
+    <legend>Caixa que possuem documentos não conferidos</legend>
+
+    @Html.Partial("_partialGridCaixasNaoRevisadas",new LAB5GED.DOMAIN.DAO.Business.CaixaBO().GetCaixasComDocumentosNaoRevisados())
+
+</fieldset>
+@Html.ActionLink("Voltar","Index","Home","",new{@class="btn btn-primary"})

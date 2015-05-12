@@ -1,0 +1,91 @@
+﻿
+
+@model LAB5GED.DOMAIN.Entidades.Documento
+@{
+    List<LAB5GED.DOMAIN.Entidades.SubserieIndice> _indexadores = new List<LAB5GED.DOMAIN.Entidades.SubserieIndice>();
+    LAB5GED.DOMAIN.Entidades.DocumentoManipulacao _captura = new LAB5GED.DOMAIN.Entidades.DocumentoManipulacao();
+  
+    try{
+            _indexadores = new LAB5GED.DOMAIN.DAO.Business.SubserieIndiceBO().GetIndexadoresDeUmaSubserie(Model.Subserie);
+            _captura = new LAB5GED.DOMAIN.DAO.Business.DocumentoManipulacaoBO().ManipulacaoCapturaDeUmDocumento(Model.Registro);
+    }catch(Exception ex)
+    {
+        LAB5GED.MVC.Acessorio.MetodosUtilidadeGeral.MensagemDeErro(ex.Message, Response);
+        return;
+    }
+    
+ }
+
+
+<h2>Revisão do Documento</h2>
+   
+@Html.Partial("partialDetalhesDocumento",Model)
+@*<table class="table table-striped table-hover" style="width:50%">
+    <tr>
+        <td><label>Id do Documento</label></td>
+        <td>@Model.Registro</td>
+    </tr>
+    
+    <tr>
+        <td>@Html.LabelFor(doc=>doc.Subserie)</td>
+        <td>@Model.FK_Subserie.Id_subserie - @Model.FK_Subserie.Rotulo_subserie </td>
+    </tr>
+   
+    <tr>
+        <td>@Html.LabelFor(doc=>doc.DataCriacao)</td>
+        <td>@Model.DataCriacao</td>
+    </tr>
+
+     <tr>
+        <td><label>Responsável pela Captura</label></td>
+        <td>@if (_captura == null) { <label>captura não registrada</label>}
+            else {@_captura.FK_Usuario.NomeUsuario }</td>
+    </tr>
+    
+    <tr>
+        <td>@Html.ActionLink("Visualizar Documento", "Visualizar", "Documento", new { _registro = Model.Registro }, new { @target = "_blank" })</td>
+        <td></td>
+    </tr>
+</table>*@
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <h3 class="panel-title">Indexadores</h3>
+  </div>
+  <div class="panel-body">
+    @if (_indexadores.Count == 0)
+    {
+        <span class="label label-warning">ATENÇÃO! Indexação não Realizada</span>
+        @Html.ActionLink("Indexar este documento", "Indexacao","SubserieIndiceValor",new {_registroDocumento = Model.Registro},"");
+    }else
+    {
+        <table class="table table-striped table-hover " style="width:100%">
+        @foreach (LAB5GED.DOMAIN.Entidades.SubserieIndice idx in _indexadores)
+        {
+            <tr>
+                <td>@Html.Label(idx.NomeIndice)</td>
+                <td>@{
+            if (new LAB5GED.DOMAIN.DAO.Business.SubserieIndiceValorBO().GetValorDeUmIndexador(idx.Registro, Model.Registro) == null)
+            {
+                @Html.ActionLink("Ir para indexação", "Indexacao", "SubserieIndiceValor", new {_registroDocumento = Model.Registro }, "")
+            } else{
+                @Html.Label(new LAB5GED.DOMAIN.DAO.Business.SubserieIndiceValorBO().GetValorDeUmIndexador(idx.Registro,Model.Registro).Valor) 
+            }  
+                }
+                </td>
+            </tr>
+
+        }
+       </table> 
+    }
+  </div>
+</div>
+
+@if(new LAB5GED.DOMAIN.DAO.Business.DocumentoBO().DocumentoIndexado(Model.Registro))
+{
+    @Html.ActionLink("Concluir Revisão","RevisarDocumento",new {_registroDocumento = Model.Registro}, new {@class="btn btn-primary" })
+}
+&nbsp
+@Html.ActionLink("Voltar","ListarDocumentosNaoRevisados","", new {@class="btn btn-primary" }) 
+
+

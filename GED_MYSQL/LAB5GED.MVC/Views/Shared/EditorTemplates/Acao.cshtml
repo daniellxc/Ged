@@ -1,0 +1,21 @@
+﻿@model LAB5GED.DOMAIN.Entidades.Acao
+
+@Html.ValidationSummary(true)
+
+<fieldset>
+    <legend>Dados da Ação</legend>
+
+    @Html.HiddenFor(a=>a.Registro)
+
+    @Html.LabelFor(a=>a.NomeAcao)<br />
+        @Html.EditorFor(a=>a.NomeAcao)
+        @Html.ValidationMessageFor(a=>a.NomeAcao)<br />
+    @Html.LabelFor(a=>a.DescricaoAcao)<br />
+        @Html.TextAreaFor(a=>a.DescricaoAcao)
+        @Html.ValidationMessageFor(a=>a.DescricaoAcao)<br /><br />
+
+</fieldset>
+ <input class="btn btn-primary" type="submit" value="Salvar" />
+<input class="btn btn-primary" type="button" onclick="location.href='@Url.Action("Index","Acao")'" value="Voltar" />
+
+ 

@@ -1,0 +1,35 @@
+﻿<?xml version="1.0"?>
+
+<!--
+  For more information on how to configure your ASP.NET application, please visit
+  http://go.microsoft.com/fwlink/?LinkId=169433
+  -->
+
+<configuration>
+
+  <connectionStrings>
+
+    <!--conexao locaweb-->
+    <!--<add name="Contexto" connectionString="Database=stacksoftware11;Data Source=186.202.152.123;User Id=stacksoftware11;Password=sisstack" providerName="MySql.Data.MySqlClient" />-->
+
+    <add name="Contexto" connectionString="Database=lab5_ged;Data Source=localhost;User Id=root;Password=root" providerName="MySql.Data.MySqlClient" />
+  </connectionStrings>
+
+  <system.data>
+    <DbProviderFactories>
+      <clear />
+      <add name="MySQL Data Provider" invariant="MySql.Data.MySqlClient" description=".Net Framework Data Provider for MySQL" type="MySql.Data.MySqlClient.MySqlClientFactory, MySql.Data, Version=6.2.5.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d" />
+    </DbProviderFactories>
+  </system.data>
+  
+    <system.web>
+      <compilation debug="true" targetFramework="4.5" />
+      <httpRuntime targetFramework="4.5" />
+      
+    </system.web>
+
+  
+
+  
+  
+</configuration>

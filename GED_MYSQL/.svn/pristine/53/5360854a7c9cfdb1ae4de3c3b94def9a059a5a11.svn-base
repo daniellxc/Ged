@@ -1,0 +1,68 @@
+﻿using LAB5GED.DOMAIN.Acessorio;
+using LAB5GED.DOMAIN.DAO.Business;
+using LAB5GED.DOMAIN.Entidades;
+using LAB5GED.MVC.Acessorio;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+
+namespace LAB5GED.MVC.Controllers
+{
+    public class DocumentoController : Controller
+    {
+        //
+        // GET: /Documento/
+
+        DocumentoBO _DAO = new DocumentoBO();
+
+        public ActionResult Index()
+        {
+            return View();
+        }
+
+        /// <summary>
+        /// NÃO PERMITE EDIÇÃO!!!
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult Cadastrar()
+        {
+            return View(new Documento());
+        }
+
+        public ActionResult CadastrarDocumento(Documento _novoDocumento, HttpPostedFileBase inputFile)
+        {
+            try
+            {
+
+                if (Request.Files.Count > 0)
+                {
+                    HttpPostedFileBase arquivo = Request.Files[0];
+
+                    Stream str = arquivo.InputStream;
+                    _DAO.SalvarDocumento(_novoDocumento, str);
+                    return View("Index");
+                }
+                else throw new Erros.ErroGeral("Nenhum arquivo selecionado.");
+               
+            }
+            catch (Exception ex)
+            {
+                MetodosUtilidadeGeral.MensagemDeErro(ex.Message,Response);
+                return View("Index");
+            }
+        }
+
+        public FileStreamResult Visualizar(int _registro)
+        {
+            Documento doc = _DAO.GetByRegistro(_registro);
+
+            return File(_DAO.GetStreamDocumento(doc), "application/pdf");
+
+        }
+    }
+
+    
+}

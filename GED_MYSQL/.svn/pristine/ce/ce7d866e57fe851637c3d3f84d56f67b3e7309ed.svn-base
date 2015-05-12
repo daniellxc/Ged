@@ -1,0 +1,21 @@
+﻿@model LAB5GED.DOMAIN.Entidades.Grupo
+
+<h2>Perfis de Usuários</h2>
+
+<fieldset>
+    <legend>Informações do perfil</legend>
+
+    @Html.HiddenFor(g=>g.Registro)
+    
+    @Html.LabelFor(g=>g.NomeGrupo)<br />
+        @Html.EditorFor(g=>g.NomeGrupo)
+        @Html.ValidationMessageFor(g=>g.NomeGrupo)<br />
+    @Html.LabelFor(g=>g.DescricaoGrupo)<br />
+        @Html.EditorFor(g=>g.DescricaoGrupo)
+        @Html.ValidationMessageFor(g=>g.DescricaoGrupo)<br />
+    @Html.LabelFor(g => g.Ativo)<br />
+        @Html.EditorFor(g => g.Ativo)<br />
+
+</fieldset>
+<input class="btn btn-primary" type="button" onclick="location.href='@Url.Action("Index","Grupo")'" value="Voltar" />
+ <input class="btn btn-primary" type="submit" value="Cadastrar Grupo" />

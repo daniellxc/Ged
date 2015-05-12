@@ -1,0 +1,47 @@
+﻿using LAB5GED.DOMAIN.DAO.Business;
+using LAB5GED.MVC.Acessorio;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+
+namespace LAB5GED.MVC.Controllers
+{
+    public class PermissaoController : Controller
+    {
+        //
+        // GET: /Permissao/
+        [PermissaoFiltro("Permissao")]
+        public ActionResult Index()
+        {
+            return View(new AcaoBO().GetAll());
+        }
+
+        public ActionResult AdicionaGrupo(int _registroAcao)
+        {
+            return View(new AcaoBO().GetByRegistro(_registroAcao));
+        }
+
+        public ActionResult ConfigurarPermissao(int _registroAcao, int _registroGrupo, bool _adiciona)
+        {
+            try
+            {
+                if (_adiciona)
+                    new AcaoBO().CadastrarAcaoGrupo(_registroAcao, _registroGrupo);
+                else
+                    new AcaoBO().RemoverAcaoGrupo(_registroAcao, _registroGrupo);
+
+                return View("AdicionaGrupo", new AcaoBO().GetByRegistro(_registroAcao));
+
+            }
+            catch(Exception ex)
+            {
+                MetodosUtilidadeGeral.MensagemDeErro("Não foi possivel configurar esta permissão. Erro:" + ex.Message, Response);
+               return RedirectToAction("AdicionarGrupo");
+            }
+            
+        }
+
+    }
+}

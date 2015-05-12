@@ -1,0 +1,42 @@
+﻿@model List<LAB5GED.DOMAIN.Entidades.Prateleira>
+@using GridMvc.Html
+
+<script src="~/Scripts/jquery-1.7.1.min.js"></script>
+<script src="~/Scripts/jquery-1.7.1.js"></script>
+
+
+<h2>Controle de Prateleiras</h2>
+
+
+@Html.ActionLink("Criar Nova Prateleira", "Cadastrar", new LAB5GED.DOMAIN.Entidades.Prateleira(), new {@class="btn btn-primary" })        
+@Html.Grid(Model).Columns(c=>
+    {
+        c.Add(e => e.FK_Estante.Corredor).Titled("Corredor").Filterable(true);
+        c.Add(e => e.FK_Estante.Numero).Titled("Estante").Filterable(true);
+        c.Add(e => e.Numero).Titled("Prateleira").Filterable(true);
+        c.Add(e => e.Descricao).Titled("Descrição").Filterable(true); ;
+        c.Add(e => e.Ativo).Titled("Ativo").Encoded(false).Sanitized(false).RenderValueAs(cl => CustomRenderingOfColumn(cl)).Filterable(true);
+     c.Add().Encoded(false).Sanitized(false).RenderValueAs(b => @Html.ActionLink("Editar", "Editar", new {_registroPrateleira = b.Registro }));
+     c.Add().Encoded(false).Sanitized(false).RenderValueAs(b => @Ajax.ActionLink("Excluir", "Confirmacao", "Mensagem", new { _action = "Excluir", _controller = "Prateleira", _model = new { Id = b.Registro } }, new AjaxOptions
+     {
+         InsertionMode = InsertionMode.Replace,
+         UpdateTargetId = "aux"
+     }, ""));
+    }).WithPaging(20).Sortable(true).EmptyText("Não há prateleiras cadastradas")
+
+
+@helper CustomRenderingOfColumn(LAB5GED.DOMAIN.Entidades.Prateleira item){
+    
+    if (item.Ativo)
+    {
+    <span style="color:green;">SIM</span>
+    }
+    else
+    {
+     <span style="color:red;">NÃO</span>          
+    }
+    
+}
+
+ @Html.ActionLink("Voltar", "Index", "Home", "", new {@class= "btn btn-primary" })
+

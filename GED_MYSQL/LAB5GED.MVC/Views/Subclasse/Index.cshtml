@@ -1,0 +1,54 @@
+﻿@model List<LAB5GED.DOMAIN.Entidades.Subclasse>
+@using GridMvc.Html
+
+<script src="~/Scripts/jquery-1.7.1.min.js"></script>
+<script src="~/Scripts/jquery-1.7.1.js"></script>
+<script type="text/javascript">
+
+
+    function complete() {
+        
+        window.location.reload();
+    }
+
+</script>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Controle de Subclasses</h2>
+
+@Html.ActionLink("Cadastrar Nova Subclasse","Cadastrar",new LAB5GED.DOMAIN.Entidades.Subclasse(),new {@class="btn btn-primary"}) 
+
+@Html.Grid(Model).Columns(c=>
+    {
+     c.Add(cl => cl.Registro).Titled("Registro");
+     c.Add(cl=>cl.Id_subclasse).Titled("ID Subclasse").Filterable(true);
+     c.Add(cl => cl.Rotulo_subclasse).Titled("Rótulo").Filterable(true);
+     c.Add(cl => cl.FK_Classe.Id_classe).Titled("Classe").Filterable(true);
+     c.Add(cl => cl.FK_Classe.Rotulo).Titled("Nome Classe").Filterable(true);
+     c.Add(cl => cl.Ativo).Titled("Ativo").Encoded(false).Sanitized(false).RenderValueAs(cl=>CustomRenderingOfColumn(cl));
+     c.Add().Encoded(false).Sanitized(false).RenderValueAs(b => @Html.ActionLink("Editar", "Editar", new {registro = b.Registro }));
+     c.Add().Encoded(false).Sanitized(false).RenderValueAs(b => @Ajax.ActionLink("Excluir", "Confirmacao", "Mensagem", new { _action = "Excluir", _controller = "Subclasse", _model = new { Id = b.Registro } }, new AjaxOptions
+     {
+         InsertionMode = InsertionMode.Replace,
+         UpdateTargetId = "aux"
+     }, ""));
+     
+    }).WithPaging(10).Sortable(true).EmptyText("Não há subclasses cadastradas")
+
+
+@helper CustomRenderingOfColumn(LAB5GED.DOMAIN.Entidades.Subclasse item)
+{
+    if (item.Ativo)
+    {
+    <span style="color:green;">SIM</span>
+    }
+    else
+    {
+     <span style="color:red;">NÃO</span>          
+    }
+}
+
+@Html.ActionLink("Voltar", "Index", "Home", "", new {@class= "btn btn-primary" })

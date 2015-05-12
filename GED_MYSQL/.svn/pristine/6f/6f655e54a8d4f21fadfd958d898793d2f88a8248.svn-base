@@ -1,0 +1,27 @@
+﻿@model LAB5GED.DOMAIN.Entidades.Documento
+@{
+    
+    List<LAB5GED.DOMAIN.Entidades.SubserieIndice> _indices = new LAB5GED.DOMAIN.DAO.Business.SubserieIndiceBO().GetIndicesDeUmaSubserie(((LAB5GED.DOMAIN.Entidades.Documento)Model).Subserie);
+    
+}
+<h2>2ª Fase - Alimentação dos Indexadores</h2>
+
+@Html.ValidationSummary(true)
+<fieldset>
+    <legend>Indexadores</legend>
+    @foreach(LAB5GED.DOMAIN.Entidades.SubserieIndice idx in _indices)
+    {
+        @Html.HiddenFor(a=> Model.Registro)
+        @Html.Hidden("regIndex",idx.Registro)
+        @Html.Label(idx.DescricaoIndice)<br />
+            @Html.TextBox("valor")
+                if(idx.Obrigatorio)
+                {
+                    @Html.ValidationMessage("valor")<br />
+                    }
+
+    }
+
+    <input type="submit" value="Cadastrar" />
+
+</fieldset>

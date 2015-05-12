@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LAB5GED.DOMAIN", "LAB5GED.DOMAIN\LAB5GED.DOMAIN.csproj", "{211D85AE-D0D4-485B-AAF4-DE6830D876D8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LAB5GED.MVC", "LAB5GED.MVC\LAB5GED.MVC.csproj", "{E234C8CC-E6AE-4C75-99BF-A7D362B53981}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{211D85AE-D0D4-485B-AAF4-DE6830D876D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{211D85AE-D0D4-485B-AAF4-DE6830D876D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{211D85AE-D0D4-485B-AAF4-DE6830D876D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{211D85AE-D0D4-485B-AAF4-DE6830D876D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E234C8CC-E6AE-4C75-99BF-A7D362B53981}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E234C8CC-E6AE-4C75-99BF-A7D362B53981}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E234C8CC-E6AE-4C75-99BF-A7D362B53981}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E234C8CC-E6AE-4C75-99BF-A7D362B53981}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

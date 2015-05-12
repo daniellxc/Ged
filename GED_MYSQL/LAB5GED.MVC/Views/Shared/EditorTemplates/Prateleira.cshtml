@@ -1,0 +1,45 @@
+﻿@model LAB5GED.DOMAIN.Entidades.Prateleira
+
+@{
+    string sugestao = (new LAB5GED.DOMAIN.DAO.Business.PrateleiraBO().GetAll().Count + 1).ToString();
+    SelectList _estantesAtivas = new SelectList(new LAB5GED.DOMAIN.DAO.Business.EstanteBO().GetEstantesAtivos(),"Registro","Numero");
+}
+
+
+<script src="~/Scripts/jquery-1.7.1.min.js"></script>
+<script src="~/Scripts/jquery-1.7.1.js"></script>
+<script type="text/javascript">
+    var test = @Model.Registro.ToString() 
+    
+    $(document).ready(function () 
+    {
+        
+
+        if(test=="0")
+            $("#Numero").val(@sugestao);
+    })
+
+</script>
+
+
+@Html.ValidationSummary(true)
+<fieldset>
+    <legend>Dados da Prateleira</legend>
+
+    @Html.LabelFor(e=>e.Numero)<br />
+        @Html.EditorFor(e=>e.Numero)
+        @Html.ValidationMessageFor(e=>e.Numero)<br />
+     @Html.LabelFor(e=>e.Estante)<br />
+        @Html.DropDownListFor(e=>e.Estante,_estantesAtivas,"selecione")
+        @Html.ValidationMessageFor(e => e.Estante)<br />
+     @Html.LabelFor(e=>e.Descricao)<br />
+        @Html.EditorFor(e=>e.Descricao)
+        @Html.ValidationMessageFor(e=>e.Descricao)<br />
+     @Html.LabelFor(e=>e.Ativo)<br />
+        @Html.EditorFor(e=>e.Ativo)
+        @Html.ValidationMessageFor(e=>e.Ativo)<br />
+
+</fieldset>
+ <input class="btn btn-primary" type="submit" value="Salvar" />
+ <input class="btn btn-primary" type="button" onclick="location.href='@Url.Action("Index","Prateleira")'" value="Voltar" />
+

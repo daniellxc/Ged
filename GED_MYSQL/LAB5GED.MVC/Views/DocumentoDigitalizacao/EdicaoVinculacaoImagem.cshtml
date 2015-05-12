@@ -1,0 +1,71 @@
+﻿@model LAB5GED.DOMAIN.Entidades.Documento
+
+@{
+    int sugestao = new LAB5GED.DOMAIN.DAO.Business.DocumentoDigitalizacaoBO().PegarDigitalizacoesDeUmDocumento(Model.Registro).Count + 1;
+    LAB5GED.DOMAIN.DAO.Business.DocumentoDigitalizacaoBO _DAO = new LAB5GED.DOMAIN.DAO.Business.DocumentoDigitalizacaoBO();
+    
+}
+<script src="~/Scripts/libscripts.js"></script>
+<script src="~/Scripts/jquery-1.7.1.min.js"></script>
+<script src="~/Scripts/jquery-1.7.1.js"></script>
+<script>
+
+  
+    $(document).ready(function () {
+
+        $("#btnImportar").hide();
+        $("#ordem").hide();
+        $("#lblOrdem").hide();
+        $("#imagemSelecionada").change(function () {
+
+            if ($("#imagemSelecionada").val() != null) {
+                $("#ordem").show();
+               
+                $("#lblOrdem").show();
+                $("#btnImportar").show();
+
+
+            }
+
+        }
+        )
+      }
+        )
+  
+
+    </script>
+
+
+
+
+
+
+    
+<h2>Digitalizações do Documento</h2>
+
+
+
+@using (Html.BeginForm("ImportarDigitalizacao", "DocumentoDigitalizacao", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.ValidationSummary()
+<fieldset>
+    <legend>Selecione as digitalizações do documento</legend>
+
+    <input type="file" name="imagemSelecionada" id="imagemSelecionada" value="Procurar..." /> <br />
+    @Html.Label("Ordem de armazenagem", new { id = "lblOrdem" })
+    @Html.TextBox("ordem", @sugestao, new {style = " width:60px; text-align:center" })<br />
+    @Html.Hidden("_registroDocumento",Model.Registro)<br />
+    @Html.Hidden("invoker","EdicaoVinculacaoImagem")<br />
+
+     <input type="submit" id="btnImportar" value="Adicionar..." />
+
+</fieldset>
+     
+@Html.Partial("ListaDigitalizacaoDocumento",_DAO.PegarDigitalizacoesDeUmDocumento(Model.Registro))
+
+
+   
+  @Html.ActionLink("Voltar","ConcluirEdicaoVinculacao","DocumentoDigitalizacao",new {_registroDocumento=Model.Registro},new {@class="btn btn-primary"})
+    
+
+}

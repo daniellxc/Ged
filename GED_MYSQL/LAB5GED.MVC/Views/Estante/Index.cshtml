@@ -1,0 +1,38 @@
+﻿@model List<LAB5GED.DOMAIN.Entidades.Estante>
+@using GridMvc.Html
+
+<script src="~/Scripts/jquery-1.7.1.min.js"></script>
+<script src="~/Scripts/jquery-1.7.1.js"></script>
+
+<h2>Controle de Estantes</h2>
+
+@Html.ActionLink("Criar Nova Estante", "Cadastrar", new LAB5GED.DOMAIN.Entidades.Estante(), new {@class="btn btn-primary" })        
+@Html.Grid(Model).Columns(c=>
+    {
+        c.Add(e => e.FK_Corredor.Numero).Titled("Corredor").Filterable(true);
+        c.Add(e => e.Numero).Titled("Estante").Filterable(true);
+        c.Add(e => e.Descricao).Titled("Descrição");
+        c.Add(e => e.Ativo).Titled("Ativo").Encoded(false).Sanitized(false).RenderValueAs(cl => CustomRenderingOfColumn(cl)).Filterable(true);
+     c.Add().Encoded(false).Sanitized(false).RenderValueAs(b => @Html.ActionLink("Editar", "Editar", new {_registroEstante = b.Registro }));
+     c.Add().Encoded(false).Sanitized(false).RenderValueAs(b => @Ajax.ActionLink("Excluir", "Confirmacao", "Mensagem", new { _action = "Excluir", _controller = "Estante", _model = new { Id = b.Registro } }, new AjaxOptions
+     {
+         InsertionMode = InsertionMode.Replace,
+         UpdateTargetId = "aux"
+     }, ""));
+    }).WithPaging(20).Sortable(true).EmptyText("Não há estantes cadastradas")
+
+
+@helper CustomRenderingOfColumn(LAB5GED.DOMAIN.Entidades.Estante item){
+    
+    if (item.Ativo)
+    {
+    <span style="color:green;">SIM</span>
+    }
+    else
+    {
+     <span style="color:red;">NÃO</span>          
+    }
+    
+}
+
+ @Html.ActionLink("Voltar", "Index", "Home", "", new {@class= "btn btn-primary" })

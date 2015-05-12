@@ -1,0 +1,9 @@
+﻿@model List<LAB5GED.DOMAIN.Entidades.Documento>
+
+<h2>Histórico de Documentos Cadastrados</h2>
+
+<div>
+    @Html.Partial("partialGridDocumentoEdit",Model)
+</div>
+
+ @Html.ActionLink("Voltar", "Index", "Home", "", new {@class= "btn btn-primary" })

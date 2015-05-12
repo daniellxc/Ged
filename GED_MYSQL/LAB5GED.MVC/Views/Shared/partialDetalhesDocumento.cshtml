@@ -1,0 +1,104 @@
+﻿@model LAB5GED.DOMAIN.Entidades.Documento
+
+
+@{
+    List<LAB5GED.DOMAIN.Entidades.SubserieIndice> _indexadores = new List<LAB5GED.DOMAIN.Entidades.SubserieIndice>();
+    LAB5GED.DOMAIN.Entidades.DocumentoManipulacao _captura = new LAB5GED.DOMAIN.Entidades.DocumentoManipulacao();
+    LAB5GED.DOMAIN.Entidades.DocumentoManipulacao _revisao = new LAB5GED.DOMAIN.Entidades.DocumentoManipulacao();
+    LAB5GED.DOMAIN.Entidades.DocumentoManipulacao _indexacao = new LAB5GED.DOMAIN.Entidades.DocumentoManipulacao();
+    LAB5GED.DOMAIN.Entidades.DocumentoManipulacao _armazenamento = new LAB5GED.DOMAIN.Entidades.DocumentoManipulacao();
+  
+    try{
+            _captura = new LAB5GED.DOMAIN.DAO.Business.DocumentoManipulacaoBO().ManipulacaoCapturaDeUmDocumento(Model.Registro);
+            _indexadores = new LAB5GED.DOMAIN.DAO.Business.SubserieIndiceBO().GetIndexadoresDeUmaSubserie(Model.Subserie);
+            _revisao =  new LAB5GED.DOMAIN.DAO.Business.DocumentoManipulacaoBO().ManipulacaoRevisaoDeUmDocumento(Model.Registro);
+            _indexacao = new LAB5GED.DOMAIN.DAO.Business.DocumentoManipulacaoBO().ManipulacaoIndexacaoDeUmDocumento(Model.Registro);
+            _armazenamento = new LAB5GED.DOMAIN.DAO.Business.DocumentoManipulacaoBO().ManipulacaoArmazenamentoDeUmDocumento(Model.Registro);
+    }catch(Exception ex)
+    {
+        LAB5GED.MVC.Acessorio.MetodosUtilidadeGeral.MensagemDeErro(ex.Message, Response);
+        return;
+    }
+    
+ }
+
+<h3>Informações do Documento</h3>
+    
+<table class="table table-striped table-hover" style="width:60%">
+    <tr>
+        <td><label><b>Descrição</b></label></td>
+        <td>@Model.Descricao</td>
+    </tr>
+
+        <tr>
+        <td><label><b>Caixa</b></label></td>
+        <td>@Model.FK_Caixa.IdCaixa</td>
+    </tr>
+    
+    <tr>
+        <td style="font-weight: bold">@Html.LabelFor(doc => doc.Subserie, new { @style= "font-weight: bold" })</b></td>
+        <td>@Model.FK_Subserie.Id_subserie - @Model.FK_Subserie.Rotulo_subserie </td>
+    </tr>
+   
+    <tr>
+        <td>@Html.LabelFor(doc => doc.DataCriacao, new { @style = "font-weight: bold" })</td>
+        <td>@Model.DataCriacao</td>
+    </tr>
+    <tr>
+        <td>@Html.Label("Prazo de Guarda", new { @style = "font-weight: bold" })<br />
+           
+        </td>
+        <td>@foreach (LAB5GED.DOMAIN.Entidades.PrazoGuarda pg in new LAB5GED.DOMAIN.DAO.Business.PrazoGuardaBO().GerPrazoGuardaSubserie(Model.Subserie))
+            {
+             <label>Corrente:&nbsp</label><b>@pg.Corrente</b><br />
+              <label>Intermediário:&nbsp</label><b>@pg.Itermediario</b><br />
+              <label>Permanente/Eliminação:&nbsp</label>if(pg.Permanente){
+                   <b>Permanente</b>
+               }else{
+                <b>Eliminação</b>   
+               }
+                
+            }
+        </td>
+    </tr>
+
+     <tr>
+        <td><label><b>Responsável pela Captura</b></label></td>
+        <td>@if (_captura == null) { <label>captura não registrada</label>}
+            else {@_captura.FK_Usuario.NomeUsuario }</td>
+    </tr>
+
+    <tr>
+        <td><label><b>Responsável pela Indexação</b></label></td>
+        <td>@if (_indexacao == null) { <label>indexação não registrada</label>}
+            else {@_indexacao.FK_Usuario.NomeUsuario }</td>
+    </tr>
+    
+    <tr>
+        <td><label><b>Responsável pela Revisão</b></label></td>
+        <td>@if (_revisao == null) { <label>revisão não registrada</label>}
+            else {@_revisao.FK_Usuario.NomeUsuario }</td>
+    </tr>
+
+     <tr>
+        <td><label><b>Responsável pelo Armazenamento</b></label></td>
+        <td>@if (_armazenamento == null) { <label>armazenamento não registrado</label>}
+            else {@_armazenamento.FK_Usuario.NomeUsuario }</td>
+    </tr>
+
+
+
+    <tr>
+        <td>@{
+            string _action = _revisao == null ?"EdicaoVinculacaoImagem":"ListarDigitalizacoesArmazenadas";
+            }
+           
+           @Html.ActionLink("Ver Digitalizações", _action , "DocumentoDigitalizacao", new { _registroDocumento = Model.Registro }, "")
+        </td>
+        <td>@if (_revisao == null)
+            {
+                @Html.ActionLink("Editar Documento", "Editar", "Documento", new {_registroDocumento = Model.Registro },"")
+            }
+        </td>
+    </tr>
+</table>

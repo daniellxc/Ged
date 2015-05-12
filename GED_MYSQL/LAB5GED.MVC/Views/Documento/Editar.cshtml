@@ -1,0 +1,94 @@
+﻿@model LAB5GED.DOMAIN.Entidades.Documento
+@{
+    SelectList subseriesAtivas = new SelectList(new LAB5GED.DOMAIN.DAO.Business.SubserieBO().GetSubseriesAtivaVinculaveisComID(), "Registro", "Rotulo_subserie");
+   
+}
+
+<script src="~/Scripts/libscripts.js"></script>
+<script src="~/Scripts/jquery-1.7.1.min.js"></script>
+<script src="~/Scripts/jquery-1.7.1.js"></script>
+<script>
+
+    $(document).ready(function () {
+        //Dropdownlist Selectedchange event
+       
+        $("#Subserie").change(function (){
+
+                $("#Caixa").empty();
+                $.ajax({
+                type: 'POST',
+                url: '@Url.Action("GetCaixasAbertasSubserie")', // we are calling json method
+
+                dataType: 'json',
+
+                data: { id: $("#Subserie").val() },
+                // here we are get value of selected country and passing same value
+
+
+                success: function (states) {
+
+                // states contains the JSON formatted list
+                // of states passed from the controller
+                    
+                        $.each(states, function (i, state) {
+                            $("#Caixa").append('<option value="' + state.Value + '">' +
+                                 state.Text + '</option>');
+                // here we are adding option for States
+
+            });
+            },
+                error: function (ex) {
+                        alert('Failed to retrieve states.' + ex);
+            }
+            });
+            return false;
+        
+        })
+    });
+
+
+ 
+
+</script>
+
+
+
+<script>
+    $(document).ready( function() {
+        $("#Salvar").click( function (){
+            if($("#Descricao").val()=="")
+            {   
+                $("#vldDescricao").text("campo obrigatório");
+                return false;
+            }
+        }
+        )
+        return true;
+    }
+    )
+</script>
+
+
+<h2>Editar Informações do Documento</h2>
+
+@using (Html.BeginForm("EditarInfoDocumento", "Documento"))
+{
+    <fieldset>
+        <legend>Dados do Documento</legend>
+        @Html.HiddenFor(d => d.Registro)
+        @Html.HiddenFor(d=>d.DataCriacao)
+        @Html.LabelFor(d=>d.Descricao)<br />
+        @Html.EditorFor(d=>d.Descricao)<br />
+
+        @Html.LabelFor(d=>d.Subserie)<br />
+        @Html.DropDownListFor(d=>d.Subserie,subseriesAtivas)<br />
+
+        @Html.LabelFor(d=>d.Caixa)<br />
+        @Html.DropDownList("Caixa",new SelectList(new LAB5GED.DOMAIN.DAO.Business.CaixaBO().GetCaixasAbertasPorSubserie(Model.Subserie), "Registro", "IdCaixa"))<br />
+
+    </fieldset>
+    <br />
+    <input type="submit" value="Salvar" class="btn btn-primary" />
+    <input type="submit" value="Voltar" class="btn btn-primary" onclick="Voltar()" />
+
+}

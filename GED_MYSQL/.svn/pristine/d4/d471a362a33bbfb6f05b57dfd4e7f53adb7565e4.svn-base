@@ -1,0 +1,28 @@
+﻿
+@model LAB5GED.DOMAIN.Entidades.Subclasse
+@{
+    
+    SelectList classesAtivas = new SelectList(new LAB5GED.DOMAIN.DAO.Business.ClasseBO().GetClassesAtivasComID(), "Registro", "Rotulo");
+}
+    @Html.ValidationSummary(true)
+   <fieldset>
+        <legend>Dados da Subclasse</legend>
+
+       @Html.HiddenFor(sc=>sc.Registro)
+        
+        @Html.LabelFor(sc=>sc.Classe)<br />
+            @Html.DropDownListFor(sc=>sc.Classe,classesAtivas)
+             @Html.ValidationMessageFor(sc=>sc.Classe)<br />
+       @Html.LabelFor(sc=>sc.Id_subclasse)<br />
+            @Html.EditorFor(sc=>sc.Id_subclasse)
+             @Html.ValidationMessageFor(sc=>sc.Id_subclasse)<br />
+        @Html.LabelFor(sc=>sc.Rotulo_subclasse)<br />
+            @Html.EditorFor(sc=>sc.Rotulo_subclasse)
+            @Html.ValidationMessageFor(sc=>sc.Rotulo_subclasse)<br />
+        @Html.LabelFor(sc=>sc.Ativo)<br />
+            @Html.EditorFor(sc=>sc.Ativo)<br />
+    </fieldset>
+ <input class="btn btn-primary" type="button" onclick="location.href='@Url.Action("Index","Subclasse")'" value="Voltar" />
+ <input class="btn btn-primary" type="submit" value="Cadastrar Subclasse" />
+
+

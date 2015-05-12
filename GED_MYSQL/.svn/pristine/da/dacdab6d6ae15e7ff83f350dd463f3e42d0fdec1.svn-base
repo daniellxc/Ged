@@ -1,0 +1,14 @@
+﻿@model List<LAB5GED.DOMAIN.Entidades.Acao>
+@using GridMvc.Html
+
+<h2>Controle de Ações</h2>
+
+@Html.ActionLink("Cadastrar Nova Ação", "Cadastrar", new LAB5GED.DOMAIN.Entidades.Acao(), new {@class="btn btn-primary" })        
+@Html.Grid(Model).Columns(c=>
+    {
+     c.Add(a=>a.NomeAcao).Titled("Ação");
+     c.Add(a=>a.DescricaoAcao).Titled("Descrição");
+     c.Add().Encoded(false).Sanitized(false).RenderValueAs(b => @Html.ActionLink("Editar", "Editar", new {_registroAcao = b.Registro }));
+     
+     
+    }).Sortable(true)

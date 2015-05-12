@@ -1,0 +1,29 @@
+﻿@model List<LAB5GED.DOMAIN.Entidades.Documento>
+@using GridMvc.Html
+
+
+<script src="~/Scripts/jquery-1.7.1.min.js"></script>
+<script src="~/Scripts/jquery-1.7.1.js"></script>
+<script type="text/javascript">
+
+
+    function complete() {
+        
+        window.location.reload();
+    }
+
+</script>
+<h2>Reconferência de Documentos</h2>
+
+@Html.Grid(Model).Columns(c=>
+    {
+        c.Add(d => d.Descricao).Titled("Descrição").Filterable(true);
+        c.Add(d => d.DataCriacao).Titled("Data de Criação");
+        c.Add(d => d.FK_Subserie.FK_Serie.Id_serie).Titled("Subsérie").RenderValueAs(d => d.FK_Subserie.Id_subserie + " - " + d.FK_Subserie.Rotulo_subserie);
+        c.Add().Encoded(false).Sanitized(false).RenderValueAs(b => @Html.ActionLink("Revisar", "Revisar","Documento", new { _registroDocumento = b.Registro },""));
+       
+    }).WithPaging(10).Sortable(true).EmptyText("Nenhum documento não revisado")
+
+
+@Html.ActionLink("Voltar","IniciarRevisao","Documento","",new{@class="btn btn-primary"})
+

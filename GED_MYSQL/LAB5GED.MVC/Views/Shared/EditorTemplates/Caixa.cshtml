@@ -1,0 +1,48 @@
+﻿@model LAB5GED.DOMAIN.Entidades.Caixa
+@{
+    
+    SelectList _prateleirasAtivas = new SelectList(new LAB5GED.DOMAIN.DAO.Business.PrateleiraBO().GetPrateleirasAtivos(), "Registro", "Numero");
+    SelectList _subseriessAtivas = new SelectList(new LAB5GED.DOMAIN.DAO.Business.SubserieBO().GetSubseriesAtivaVinculaveisComID(), "Registro", "Rotulo_subserie");
+}
+
+   
+
+    <fieldset>
+        <legend>Informações da Caixa</legend>
+         @Html.ValidationSummary(true)
+            @Html.HiddenFor(model=>model.Registro)
+            
+            @Html.LabelFor(model => model.IdCaixa)   <br />
+            @Html.EditorFor(model => model.IdCaixa)
+            @Html.ValidationMessageFor(model => model.IdCaixa) <br />
+       
+             @Html.LabelFor(model => model.Descricao)   <br />
+             @Html.EditorFor(model => model.Descricao) <br />
+
+
+            @Html.LabelFor(model => model.Subserie) <br />
+            @Html.DropDownListFor(model => model.Subserie,_subseriessAtivas,"selecione")
+            @Html.ValidationMessageFor(model => model.Subserie) <br />
+         
+            
+            @Html.LabelFor(model => model.Prateleira) <br />
+            @Html.DropDownListFor(model => model.Prateleira,_prateleirasAtivas,"selecione")
+            @Html.ValidationMessageFor(model => model.Prateleira) <br />
+ 
+            @Html.LabelFor(model => model.Aberta) <br />
+  
+            @Html.EditorFor(model => model.Aberta)
+            @Html.ValidationMessageFor(model => model.Aberta) <br />
+
+
+       
+    </fieldset>
+
+  <input type="submit" value="Salvar" class="btn btn-primary"/>
+    @Html.ActionLink("Voltar", "Index", "", new {@class="btn btn-primary"})
+  
+           
+
+
+
+

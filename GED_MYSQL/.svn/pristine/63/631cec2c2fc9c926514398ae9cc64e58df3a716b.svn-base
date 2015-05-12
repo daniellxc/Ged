@@ -1,0 +1,22 @@
+﻿@model LAB5GED.DOMAIN.Entidades.Documento
+
+@{
+    SelectList subseriesAtivas = new SelectList(new LAB5GED.DOMAIN.DAO.Business.SubserieBO().GetSubseriesAtivaComID(), "Registro", "Rotulo_subserie");
+}
+<h2>1ª Fase - Captura Inicial de Documento</h2>
+
+<fieldset>
+    <legend>Informações do Documento</legend>
+
+    @Html.HiddenFor(d=>d.Registro)
+
+           <input type="file" id="inputFile" title="Escolher arquivo" name="inputFile"/>
+           
+        @Html.LabelFor(d=>d.Subserie)<br />
+            @Html.DropDownListFor(d=>d.Subserie,subseriesAtivas)
+            @Html.ValidationMessageFor(d=>d.Subserie)<br />
+    @Html.HiddenFor(d=>d.DataCriacao)<br />
+</fieldset>
+
+<input class="btn btn-primary" type="button" onclick="location.href='@Url.Action("Index","Home")'" value="Voltar" />
+<input class="btn btn-primary" type="submit" value="Cadastrar Documento" />

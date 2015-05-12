@@ -1,0 +1,28 @@
+﻿@model LAB5GED.DOMAIN.Entidades.Serie
+@{
+    
+    SelectList subclassesAtivas = new SelectList(new LAB5GED.DOMAIN.DAO.Business.SubclasseBO().GetSubClassesAtivasComRegistro(), "Registro", "Rotulo_subclasse");
+}
+    @Html.ValidationSummary(true)
+   <fieldset>
+        <legend>Dados da Série</legend>
+
+       @Html.HiddenFor(s=>s.Registro)
+       
+        @Html.LabelFor(s=>s.Subclasse)<br />
+            @Html.DropDownListFor(s=>s.Subclasse,subclassesAtivas)
+             @Html.ValidationMessageFor(sc=>sc.Subclasse)<br />
+        @Html.LabelFor(s=>s.Id_serie)<br />
+            @Html.EditorFor(s=>s.Id_serie)
+             @Html.ValidationMessageFor(s=>s.Id_serie)<br />
+        @Html.LabelFor(s=>s.Rotulo_serie)<br />
+            @Html.EditorFor(s=>s.Rotulo_serie)
+            @Html.ValidationMessageFor(s=>s.Rotulo_serie)<br />
+        @Html.LabelFor(s=>s.Ativo)<br />
+            @Html.EditorFor(s=>s.Ativo)<br />
+
+    </fieldset>
+    <input class="btn btn-primary" type="button" onclick="location.href='@Url.Action("Index","Serie")'" value="Voltar" />
+    <input class="btn btn-primary" type="submit" value="Cadastrar Série" />
+
+

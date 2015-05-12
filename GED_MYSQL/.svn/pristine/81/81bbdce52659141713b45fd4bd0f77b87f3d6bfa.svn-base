@@ -1,0 +1,23 @@
+﻿@model List<LAB5GED.DOMAIN.Entidades.Documento>
+
+<h2>Consultar Documentos Capturados</h2>
+
+@using (Ajax.BeginForm("ConsultaAluno", new AjaxOptions
+{
+    InsertionMode = InsertionMode.Replace,
+    UpdateTargetId = "consulta_aluno"
+}))
+{
+
+<fieldset>
+    <legend>Dados da Consulta</legend>
+    @Html.Label("Nome do Aluno")<br />
+    <input type="text" name="_nomeAluno" id="_nomeAluno" />
+    <input type="submit" name="btnConsultar" id="btnConsultar" class="btn btn-primary" value="Pesquisar"/>
+</fieldset>
+}
+
+<div id="consulta_aluno"></div>
+
+
+<div id="documentos_aluno"></div>

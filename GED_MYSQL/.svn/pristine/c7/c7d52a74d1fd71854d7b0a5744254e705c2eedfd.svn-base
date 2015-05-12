@@ -1,0 +1,128 @@
+﻿using LAB5GED.DOMAIN.DAO.Business;
+using LAB5GED.DOMAIN.Entidades;
+using LAB5GED.MVC.Acessorio;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+
+namespace LAB5GED.MVC.Controllers
+{
+    
+    public class UsuarioController : Controller
+    {
+        //
+        // GET: /Usuario/
+        private UsuarioBO _DAO = new UsuarioBO();
+
+        [PermissaoFiltro("Usuario")]
+        public ActionResult Index()
+        {
+            MetodosUtilidadeGeral.LimparSessaoEdicao(Session); 
+            return View(_DAO.GetAll());
+        }
+
+        public ActionResult Cadastrar(Usuario _usuario)
+        {
+            return View(_usuario);
+        }
+
+        public ActionResult Editar(int _registroUsuario)
+        {
+            Session["id"] = _registroUsuario;
+            return View("Cadastrar",_DAO.GetByRegistro(_registroUsuario));
+        }
+
+        public ActionResult CadastrarUsuario(Usuario _novoUsuario)
+        {
+            if (!ModelState.IsValid)
+                return View("Cadastrar", _novoUsuario);
+            {
+                try
+                {
+                    
+                    if (Session["id"] != null) _novoUsuario.Registro = int.Parse(Session["id"].ToString());
+                    else
+                        _novoUsuario.Senha = new Seguranca().getMD5Hash(_novoUsuario.Senha);
+                    _DAO.SalvarUsuario(_novoUsuario);
+                    return RedirectToAction("Index","Usuario");
+
+                }
+                catch (Exception ex)
+                {
+                    MetodosUtilidadeGeral.MensagemDeErro(ex.Message, Response);
+                    return View("Cadastrar", _novoUsuario);
+
+                }
+            }
+
+        }
+
+        public ActionResult ExcluirUsuario(int _registroUsuario)
+        {
+            try
+            {
+                _DAO.ExcluirUsuario(_DAO.GetByRegistro(_registroUsuario));
+                return RedirectToAction("Index","Usuario");
+            }
+            catch (Exception ex)
+            {
+                MetodosUtilidadeGeral.MensagemDeErro(ex.Message,Response);
+                return RedirectToAction("Index");
+            }
+        }
+
+        [PermissaoFiltro("AlterarSenha")]
+        public ActionResult AlterarSenha(Usuario _usuarioAlterar)
+        {
+            Session["id"] = _usuarioAlterar.Registro;
+            return View(_usuarioAlterar);
+        }
+
+
+        public ActionResult ExecutaAlterarSenha(Usuario _usuario)
+        {
+            try
+            {
+                _usuario.DataCadastro = _DAO.GetByRegistro(_usuario.Registro).DataCadastro;
+                _usuario.Senha = new Seguranca().getMD5Hash(_usuario.Senha);
+                CadastrarUsuario(_usuario);
+                return RedirectToAction("Index", "Home");
+                
+            }
+            catch (Exception ex)
+            {
+                MetodosUtilidadeGeral.MensagemDeErro(ex.Message,Response);
+                return RedirectToAction("AlterarSenha", _usuario);
+            }
+        }
+
+        public ActionResult AdicionarAoGrupo(int _registroUsuario)
+        {
+            return View(_DAO.GetByRegistro(_registroUsuario));
+        }
+
+
+   
+
+        public ActionResult ConfigurarPerfil(int _registroUsuario, int _registroGrupo, bool _adiciona)
+        {
+            try
+            {
+                if (_adiciona)
+                    _DAO.CadastrarUsuarioGrupo(_registroUsuario, _registroGrupo);
+                else
+                    _DAO.RemoverUsuarioGrupo(_registroUsuario, _registroGrupo);
+
+                return View("AdicionarAoGrupo",new UsuarioBO().GetByRegistro(_registroUsuario));
+            }
+            catch (Exception ex)
+            {
+                MetodosUtilidadeGeral.MensagemDeErro("Não foi possível mudar o perfil deste usuário.",Response);
+                return View("AdicionarAoGrupo", _registroUsuario);
+            }
+
+        }
+    }
+}

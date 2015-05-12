@@ -1,0 +1,15 @@
+﻿@model List<LAB5GED.DOMAIN.Entidades.DocumentoDigitalizacao>
+
+@using GridMvc.Html
+
+@Html.Grid(Model).Columns(c=>
+{
+     c.Add().Encoded(false).Sanitized(false).RenderValueAs(ad => @<img class="thumb" title="@ad.Nome"  src= "@Url.Content("~/Content/img/pdfico.png")" height="30" width="30" alt="@ad.Nome" />);
+   // c.Add().Encoded(false).Sanitized(false).RenderValueAs(ad => @<img class="thumb" title="@ad.Nome"  src= "@string.Format("data:image/png;base64,{0}", Convert.ToBase64String(ad.Dados))" height="100" width="100" alt="@ad.Nome" />);
+    c.Add(l=>l.Nome).Titled("Arquivo");
+    c.Add(l => l.Extensao).Titled("Extensão");
+    c.Add(l => l.Ordem).Titled("Ordem");
+    c.Add().Encoded(false).Sanitized(false).RenderValueAs(b => @Html.ActionLink("Visualizar", "VisualizarDigitalizacao", "DocumentoDigitalizacao", new { _registroDocumentoDigitalizacao = b.Registro }, new { @target = "_blank" }));
+    c.Add().Encoded(false).Sanitized(false).RenderValueAs(b => @Html.ActionLink("Excluir", "ExcluirDigitalizacao", "DocumentoDigitalizacao", new { _registroDocumentoDigitalizacao = b.Registro }, ""));
+    
+}).EmptyText("Nenhuma digitalização adicionada ao documento")

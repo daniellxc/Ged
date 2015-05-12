@@ -1,0 +1,23 @@
+﻿@model LAB5GED.DOMAIN.Entidades.Classe
+
+@Html.ValidationSummary(true)
+
+<fieldset>
+    <legend>Dados da Classe</legend>
+
+    @Html.HiddenFor(c=>c.Registro)
+
+    @Html.LabelFor(c=>c.Id_classe)<br />
+        @Html.EditorFor(c=>c.Id_classe)
+        @Html.ValidationMessageFor(c=>c.Id_classe)<br />
+    @Html.LabelFor(c=>c.Rotulo)<br />
+        @Html.EditorFor(c=>c.Rotulo)
+        @Html.ValidationMessageFor(c=>c.Rotulo)<br />
+     @Html.LabelFor(c=>c.Ativo)<br />
+        @Html.EditorFor(c=>c.Ativo)
+        @Html.ValidationMessageFor(c=>c.Ativo)<br />
+    @*@Html.HiddenFor(c=>c.DataAbertura)*@
+</fieldset>
+<input class="btn btn-primary" type="submit" value="Salvar" />
+<input class="btn btn-primary" type="button" onclick="location.href='@Url.Action("Index","Classe")'" value="Voltar" />
+ 

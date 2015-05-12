@@ -1,0 +1,24 @@
+﻿@model List<LAB5GED.DOMAIN.Entidades.Documento>
+@using GridMvc.Html
+
+@Html.Grid(Model).Columns(c=>
+    {
+        c.Add(d => d.Registro).Titled("Registro");
+        c.Add(d => d.DataCriacao).Titled("Data da Captura");
+        c.Add(d => d.FK_Subserie.FK_Serie.Id_serie).Titled("Subsérie").RenderValueAs(d => d.FK_Subserie.Id_subserie + " - " + d.FK_Subserie.Rotulo_subserie);
+        c.Add().Titled("Revisado").Encoded(false).Sanitized(false).RenderValueAs(cl => CustomRenderingOfColumn(cl));
+        c.Add().Encoded(false).Sanitized(false).RenderValueAs(b => @Html.ActionLink("Visualizar", "Visualizar", "Documento", new { _registro = b.Registro }, new {@target = "_blank"}));
+        
+    }).Sortable(false)
+
+@helper CustomRenderingOfColumn(LAB5GED.DOMAIN.Entidades.Documento item)
+{
+    if (new LAB5GED.DOMAIN.DAO.Business.DocumentoBO().DocumentoRevisado(item.Registro))
+    {
+    <span style="color:green;">SIM</span>
+    }
+    else
+    {
+     <span style="color:red;">NÃO</span>          
+    }
+}

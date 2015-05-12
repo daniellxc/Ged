@@ -1,0 +1,7 @@
+﻿@model LAB5GED.DOMAIN.Entidades.Documento
+<script src="~/Scripts/libscripts.js"></script>
+<h2>Digitalizações do Documento</h2>
+@Html.Partial("partialInfoDocumento",Model)
+@Html.Partial("partialGridDigitalizacoesDocumento", new LAB5GED.DOMAIN.DAO.Business.DocumentoDigitalizacaoBO().PegarDigitalizacoesDeUmDocumento(Model.Registro))
+<br />
+<input type="button" class="btn btn-primary" value="Voltar" onclick= "Voltar();" />

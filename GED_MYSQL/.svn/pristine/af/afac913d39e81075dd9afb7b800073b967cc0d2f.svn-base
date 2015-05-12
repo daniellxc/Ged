@@ -1,0 +1,28 @@
+﻿using LAB5GED.DOMAIN.DAO.Business;
+using LAB5GED.DOMAIN.Entidades;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
+namespace LAB5GED.MVC.Acessorio
+{
+    public class Seguranca
+    {
+        /// <summary>
+        /// Retorna NULL se nenhum usuário estiver logado;
+        /// </summary>
+        /// <returns></returns>
+        public static Usuario UsuarioLogado()
+        {
+            try
+            {
+                return new UsuarioBO().GetByRegistro(int.Parse(HttpContext.Current.User.Identity.Name));
+            }
+            catch
+            {
+                return null;
+            }
+        }
+    }
+}

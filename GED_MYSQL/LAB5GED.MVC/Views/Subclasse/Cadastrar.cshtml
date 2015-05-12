@@ -1,0 +1,15 @@
+﻿@model LAB5GED.DOMAIN.Entidades.Subclasse
+@{
+    SelectList items = (SelectList)ViewData["classes"];
+
+}
+<h2>Cadastrar Subclasse</h2>
+@using(Html.BeginForm("CadastrarSubclasse", "Subclasse")){
+    @Html.ValidationSummary(true)
+   
+    @Html.EditorForModel()
+        
+    
+ 
+}
+

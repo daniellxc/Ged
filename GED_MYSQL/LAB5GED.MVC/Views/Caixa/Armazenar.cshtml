@@ -1,0 +1,42 @@
+﻿@model LAB5GED.DOMAIN.Entidades.Documento
+@using GridMvc.Html
+@{
+    List<LAB5GED.DOMAIN.Entidades.Caixa> _caixasAbertas = new LAB5GED.DOMAIN.DAO.Business.CaixaBO().GetCaixasAbertas();
+    
+}
+
+<script src="~/Scripts/jquery-1.7.1.min.js"></script>
+<script src="~/Scripts/jquery-1.7.1.js"></script>
+<script type="text/javascript">
+
+
+    function complete() {
+        
+        location.href = "../Documento/DocumentosNaoArmazenados";
+    }
+
+</script>
+
+<h2>Armazenar Documento</h2>
+
+
+
+<div>
+    @Html.Partial("partialInfoDocumento",Model)
+</div>
+<p>Escolha uma das caixas disponíveis para inserir o documento selecionado.</p>
+@Html.Grid(_caixasAbertas).Columns(c=>
+    {
+     c.Add(a=>a.IdCaixa).Titled("Caixa").Filterable(true);
+     c.Add(a=>a.Localizacao).Titled("Localização").Filterable(true);
+     c.Add(a => a.Documentos.Count).Titled("Volume Atual").Encoded(false).Sanitized(true).RenderValueAs(a => a.Documentos.Count.ToString()).Filterable(true);
+     c.Add().Encoded(false).Sanitized(false).RenderValueAs(b => @Ajax.ActionLink("Inserir", "Confirmacao", "Mensagem", new { _action = "ArmazenarDocumento", _controller = "Documento", _model = new { _registroDocumento = Model.Registro, _registroCaixa = b.Registro } }, new AjaxOptions
+     {
+         InsertionMode = InsertionMode.Replace,
+         UpdateTargetId = "aux"
+     }, ""));  
+     
+    }).Sortable(true)
+
+<input type="button" onclick="history.go(-1)" class="btn btn-primary" value="Voltar"/>
+

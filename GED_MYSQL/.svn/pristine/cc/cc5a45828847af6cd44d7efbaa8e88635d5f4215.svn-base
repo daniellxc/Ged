@@ -1,0 +1,120 @@
+﻿@model LAB5GED.DOMAIN.Entidades.Documento
+
+@{
+    
+    List<LAB5GED.DOMAIN.Entidades.SubserieIndice> _indices = new LAB5GED.DOMAIN.DAO.Business.SubserieIndiceBO().GetIndexadoresDeUmaSubserie(((LAB5GED.DOMAIN.Entidades.Documento)Model).Subserie);
+    
+}
+
+
+<script src="~/Scripts/jquery-1.7.1.min.js"></script>
+<script src="~/Scripts/jquery-1.7.1.js"></script>
+<script>
+    function abrir() {
+        if(document.getElementById("consultarmatricula").style.display=="none")
+            $("#consultarmatricula").show("slow");
+        else
+            $("#consultarmatricula").hide("slow");
+        return false;
+    }
+
+    function fechar() {
+        $("#consultarmatricula").hide("slow");
+    }
+
+    function consultar() {
+        
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("ConsultarAluno")',
+            data: { _nome: $("#txtNome").val() },
+            dataType: "json",
+            success: function (alunos) {
+
+                $("#grid_procura").html("");
+                var procura_table = "<table>";
+                procura_table += "<tr>";
+                    procura_table += "<td>";
+                        procura_table += "Nome";
+                    procura_table += "</td>";
+                    procura_table += "<td>";
+                    procura_table += "</td>";
+                    procura_table += "</tr>";
+                $.each(alunos, function (i, aluno) {
+                    procura_table += "<tr>";
+                    procura_table += "<td>";
+                    procura_table += aluno.FK_Pessoa.nome;
+                    //procura_table += "<input type='hidden' value='" + aluno.matricula + "' />";
+                    procura_table += "</td>";
+                    procura_table += "<td>";
+                    procura_table += "<a onclick=\"atualizar_matricula('" + aluno.matricula + "')\">"+aluno.matricula+"</a>";
+                    procura_table += "</td>";
+                    procura_table += "</tr>";
+                });
+                procura_table += "</table>";
+                $("#grid_procura").html(procura_table);
+
+            },
+            error: function(msg) {
+                $("#erro").html(msg.responseText);
+            }
+        });
+    }
+
+    function atualizar_matricula(_matricula) {
+        $("#valor").val(_matricula);
+        fechar();
+    }
+</script>
+
+<h2>2ª Fase - Registro dos Indexadores</h2>
+
+@Html.ValidationSummary(true)
+<fieldset>
+    <legend>Indexadores</legend>
+    @foreach(LAB5GED.DOMAIN.Entidades.SubserieIndice idx in _indices)
+    {
+        if(! new LAB5GED.DOMAIN.DAO.Business.SubserieIndiceBO().IndexadorIndexado(idx.Registro, Model.Registro))
+        {
+        
+                @Html.HiddenFor(a=> Model.Registro)
+                <input type="hidden" name="regIndex" id="@idx.NomeIndice" value="@idx.Registro"/>
+                @Html.Label(idx.NomeIndice)<br />
+                  <input type="text" name="valor" id="valor"/>
+                if (idx.NomeIndice.ToLower() == "matrícula")
+                {
+           
+                   <input type="button" name="Consultar Matrícula" value="Consultar Matrícula" onclick="return abrir()" />
+                }
+                if (idx.Obrigatorio)
+                {
+                            <span>indexador obrigatório</span><br />
+                    
+                }
+        
+         }
+
+    }
+
+    <br /><br />
+    
+  <input type="submit" value="Cadastrar Indexadores" class="btn btn-primary" />
+
+</fieldset>
+
+
+
+
+
+<div class="panel panel-info" id="consultarmatricula" style="width:50%; display:none">
+  <div class="panel-heading">
+    <h3 class="panel-title">Consultar Aluno</h3>
+  </div>
+  <div class="panel-body"">
+    <label>Nome do Aluno</label><br />
+    <input type="text" id="txtNome" name="txtNome" style="width:300px" /> <input type="button" value="Pesquisar" onclick="consultar()" /> <br /><br />
+     <div id="grid_procura"></div>
+  </div>
+</div>
+
+<div id="erro"></div>

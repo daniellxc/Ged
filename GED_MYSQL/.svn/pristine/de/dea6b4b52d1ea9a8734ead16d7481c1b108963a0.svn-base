@@ -1,0 +1,13 @@
+﻿@model List<Sistema.Acadiesp.Entidades.Aluno>
+@using GridMvc.Html
+
+@Html.Grid(Model).Columns(c=>
+    {
+        c.Add(a => a.matricula).Titled("Aluno").RenderValueAs(a=>a.matricula + " - " + a.FK_Pessoa.nome) ;
+        c.Add().Encoded(false).Sanitized(false).RenderValueAs(b => @Ajax.ActionLink("ver documentos", "DocumentosDoAluno", new  {_matriculaAluno = b.matricula }, new AjaxOptions
+        {
+            InsertionMode = InsertionMode.Replace,
+            UpdateTargetId = "documentos_aluno"
+        }));
+       
+    }).Sortable(true)

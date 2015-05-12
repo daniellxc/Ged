@@ -1,0 +1,33 @@
+﻿@model List<LAB5GED.DOMAIN.Entidades.Acao>
+@using GridMvc.Html
+
+<script src="~/Scripts/jquery-1.7.1.min.js"></script>
+<script src="~/Scripts/jquery-1.7.1.js"></script>
+<script type="text/javascript">
+
+
+    function complete() {
+        
+        window.location.reload();
+    }
+
+</script>
+
+<h2>Controle de Ações</h2>
+
+@Html.ActionLink("Cadastrar Nova Ação", "Cadastrar", new LAB5GED.DOMAIN.Entidades.Acao(), new {@class="btn btn-primary" })        
+@Html.Grid(Model).Columns(c=>
+    {
+     c.Add(a=>a.NomeAcao).Titled("Ação").Filterable(true);
+     c.Add(a => a.DescricaoAcao).Titled("Descrição").Filterable(true);
+     c.Add().Encoded(false).Sanitized(false).RenderValueAs(b => @Html.ActionLink("Editar", "Editar", new {_registroAcao = b.Registro }));
+     c.Add().Encoded(false).Sanitized(false).RenderValueAs(b => @Ajax.ActionLink("Excluir", "Confirmacao", "Mensagem", new { _action = "Excluir", _controller = "Acao", _model = new {Id=b.Registro } }, new AjaxOptions
+     {
+         InsertionMode = InsertionMode.Replace,
+         UpdateTargetId = "aux"
+     }, ""));
+     
+    }).Sortable(true).EmptyText("Não há ações cadastradas")
+
+
+    @Html.ActionLink("Voltar", "Index", "Home", "", new {@class= "btn btn-primary" })

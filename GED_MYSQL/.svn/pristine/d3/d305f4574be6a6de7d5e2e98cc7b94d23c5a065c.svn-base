@@ -1,0 +1,151 @@
+﻿using LAB5GED.DOMAIN.Acessorio;
+using LAB5GED.DOMAIN.DAO.Interfaces;
+using LAB5GED.DOMAIN.Entidades;
+using System;
+using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
+using System.Data.Entity.Validation;
+using System.Linq;
+using System.Text;
+
+namespace LAB5GED.DOMAIN.DAO.Business
+{
+    public class SubserieBO
+    {
+        private class SubserieDAO:AbstracCrudDAO<Subserie>,ISubserieDAO
+        {
+            public SubserieDAO()
+            {
+
+            }
+            
+        }
+
+        private SubserieDAO _DAO = new SubserieDAO();
+
+
+        public void SalvarSubserie(Subserie _subserie)
+        {
+            try
+            {
+                _subserie.Subserie_pai = _subserie.Subserie_pai == 0 ? null : _subserie.Subserie_pai;
+
+                _subserie.Id_subserie = TratarIdSubSerie(_subserie);
+
+                if (_subserie.Registro == 0)
+                {
+                    _DAO.Add(_subserie);
+                    _DAO.SaveChanges();
+                }
+                else
+                    _DAO.Atualizar(_subserie,_subserie.Registro);
+            }
+            catch (DbEntityValidationException dbex)
+            {
+                throw new Erros.ErroDeValidacao(dbex);
+            }
+            catch (DbUpdateException dbuex)
+            {
+                throw new Erros.ErroGeral("Não foi possível concluir a operação. Verifique se o item não foi cadastrado previamente.");
+            }
+            catch (Exception ex)
+            {
+                throw new Erros.ErroGeral("Erro inesperado. " + ex.Message);
+            }
+
+        }
+
+        public List<Subserie> GetAll()
+        {
+            return _DAO.GetAll().OrderBy(ss=>ss.Serie).OrderBy(ss=>ss.Subserie_pai).OrderBy(ss=>ss.Id_subserie).ToList<Subserie>();
+        }
+
+        public List<Subserie> GetSubseriesAtivas()
+        {
+            return _DAO.Find(ss => ss.Ativo == true).OrderBy(ss => ss.Serie).OrderBy(ss => ss.Subserie_pai).OrderBy(ss => ss.Id_subserie).ToList<Subserie>();
+        }
+
+        public List<Subserie> GetSubseriesAtivaComRegistro()
+        {
+            var source = from s in this.GetSubseriesAtivas()
+                         select new Subserie {Registro=s.Registro,Serie = s.Serie ,Rotulo_subserie= s.Id_subserie + " - " + s.Rotulo_subserie };
+            return source.ToList<Subserie>();
+        }
+
+        public List<Subserie> GetSubseriesAtivasMenu()
+        {
+            List<Subserie> menu = GetSubseriesAtivaComRegistro();
+            menu.Add(new Subserie("Nenhuma"));
+            return menu;
+        }
+
+        public List<Subserie> GetSubseriesAtivasDeUmaSerie(int _registroSerie)
+        {
+            //return GetSubseriesAtivas().Where(ss => ss.Serie == _registroSerie).OrderBy(ss => ss.Id_subserie).ToList<Subserie>();
+            var source = from s in GetSubseriesAtivaComRegistro()
+                         where s.Serie == _registroSerie
+                         select s;
+            return source.ToList<Subserie>();
+        }
+
+        public List<Subserie> GetSubseriesAtivasDeUmaSerieComItemNulo(int _registroSerie)
+        {
+            List<Subserie> menu = GetSubseriesAtivasDeUmaSerie(_registroSerie);
+            menu.Add(new Subserie("Nenhuma"));
+            return menu;
+        }
+
+        public bool SubserieFilha(Subserie _subSerie)
+        {
+            return _subSerie.Subserie_pai != 0 && _subSerie.Subserie_pai != null;
+        }
+
+
+        public Subserie GetByRegistro(int _registro)
+        {
+            return _DAO.Find(ss => ss.Registro == _registro).First();
+        }
+
+        public string TratarIdSubSerie(Subserie _subSerie)
+        {
+            string IDAux = _subSerie.Id_subserie.Replace('.', ' ').Substring(0, _subSerie.Id_subserie.Length - 1).Trim();
+            Serie serie = new SerieBO().GetByRegistro(_subSerie.Serie);
+            if (SubserieFilha(_subSerie))
+            {
+                if (IDAux != new SubserieBO().GetByRegistro(_subSerie.Subserie_pai.Value).Id_subserie.Replace('.', ' '))
+                    throw new Erros.ErroGeral("ID da Subsérie inválido. Consulte as regras de identificação de Subséries.");
+                else
+                {
+                    if (DigitosValidos(_subSerie.Id_subserie))
+                        return _subSerie.Id_subserie;
+                    else throw new Erros.ErroGeral("O ID da Subsérie possui caracteres inválidos");
+                }
+
+            }
+            else
+            {
+               
+                if(IDAux != serie.Id_serie)
+                    throw new Erros.ErroGeral("ID da Subsérie inválido. Consulte as regras de identificação de Subséries.");
+                else
+                {
+                    if (DigitosValidos(_subSerie.Id_subserie))
+                        return _subSerie.Id_subserie;
+                    else throw new Erros.ErroGeral("O ID da Subsérie possui caracteres inválidos");
+                }
+            }
+        }
+
+        private bool DigitosValidos(string id)
+        {
+            foreach (Char c in id)
+            {
+                if (!char.IsNumber(c))
+                    if (!c.Equals('.'))
+                        return false;
+                    
+            }
+            return true;
+        }
+    }
+}

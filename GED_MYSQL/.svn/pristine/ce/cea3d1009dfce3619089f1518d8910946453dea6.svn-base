@@ -1,0 +1,91 @@
+﻿@model LAB5GED.DOMAIN.Entidades.Subserie
+@{
+    
+    SelectList seriesAtivas    = new SelectList(new LAB5GED.DOMAIN.DAO.Business.SerieBO().GetSeriesAtivasComRegistro(), "Registro", "Rotulo_serie");
+    SelectList subseriesAtivas = new SelectList(new LAB5GED.DOMAIN.DAO.Business.SubserieBO().GetSubseriesAtivasMenu(),"Registro","Rotulo_subserie","Nenhuma");
+    SelectList tipoDestinacaoAtivos = new SelectList(new LAB5GED.DOMAIN.DAO.Business.TipoDestinacaoSubserieBO().GetTiposDestinacaoSubserieAtivos(), "Registro", "Descricao");
+    SelectList prazoGuardaAtivos = new SelectList(new LAB5GED.DOMAIN.DAO.Business.PrazoGuardaBO().GetPrazosGuardaAtivos(), "Registro", "Rotulo");
+    
+   
+}
+
+<script src="~/Scripts/jquery-1.7.1.min.js"></script>
+<script src="~/Scripts/jquery-1.7.1.js"></script>
+<script>
+
+    $(document).ready(function () {
+        //Dropdownlist Selectedchange event
+
+        $("#Serie").change(function () {
+           
+            $("#Subserie_pai").empty();
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("GetSubseriesDaSerie")', // we are calling json method
+
+                dataType: 'json',
+
+                data: { id: $("#Serie").val() },
+                // here we are get value of selected country and passing same value
+
+
+                success: function (states) {
+
+                    // states contains the JSON formatted list
+                    // of states passed from the controller
+                    
+                    $.each(states, function (i, state) {
+                        $("#Subserie_pai").append('<option value="' + state.Value + '">' +
+                             state.Text + '</option>');
+                        // here we are adding option for States
+
+                    });
+                },
+                error: function (ex) {
+                    alert('Failed to retrieve states.' + ex);
+                }
+            });
+            return false;
+        })
+    });
+
+
+ 
+
+</script>
+
+
+
+    @Html.ValidationSummary(true)
+   <fieldset>
+        <legend>Dados da Subserie</legend>
+
+       @Html.HiddenFor(ss=>ss.Registro)
+
+
+       @Html.LabelFor(ss=>ss.Serie)<br />
+         @Html.DropDownListFor(ss=>ss.Serie,seriesAtivas)
+             @Html.ValidationMessageFor(ss=>ss.Serie)<br />
+        @Html.LabelFor(ss=>ss.Subserie_pai)<br />
+            @Html.DropDownList("Subserie_pai",new SelectList(new LAB5GED.DOMAIN.DAO.Business.SubserieBO().GetSubseriesAtivaComRegistro(),"Registro","Rotulo_subserie"),"Nenhuma")
+             @Html.ValidationMessageFor(ss=>ss.Subserie_pai)<br />
+
+       @* @Html.LabelFor(ss=>ss.Tipo_destinacao_subserie)<br />
+            @Html.DropDownListFor(ss=>ss.Tipo_destinacao_subserie,tipoDestinacaoAtivos)
+             @Html.ValidationMessageFor(sc=>sc.Tipo_destinacao_subserie)<br />
+         @Html.LabelFor(ss=>ss.Prazo_guarda)<br />
+            @Html.DropDownListFor(ss=>ss.Prazo_guarda,prazoGuardaAtivos)
+             @Html.ValidationMessageFor(ss=>ss.Tipo_destinacao_subserie)<br />*@
+
+        @Html.LabelFor(ss=>ss.Id_subserie)<br />
+            @Html.EditorFor(ss=>ss.Id_subserie)
+            @Html.ValidationMessageFor(ss=>ss.Id_subserie)<br />
+        @Html.LabelFor(ss=>ss.Rotulo_subserie)<br />
+            @Html.EditorFor(ss=>ss.Rotulo_subserie)
+            @Html.ValidationMessageFor(ss=>ss.Rotulo_subserie)<br />
+        @Html.LabelFor(sc=>sc.Ativo)<br />
+            @Html.EditorFor(sc=>sc.Ativo)<br />
+    </fieldset>
+ <input class="btn btn-primary" type="button" onclick="location.href='@Url.Action("Index","Subserie")'" value="Voltar" />
+ <input class="btn btn-primary" type="submit" value="Cadastrar Subserie" />
+

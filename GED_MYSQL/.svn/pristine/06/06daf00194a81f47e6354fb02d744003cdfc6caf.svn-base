@@ -1,0 +1,30 @@
+﻿@model List<LAB5GED.DOMAIN.Entidades.SubserieIndice>
+@using GridMvc.Html
+
+<h2>Controle de Indexadores</h2>
+
+@Html.ActionLink("Cadastrar Novo Indexador","Cadastrar",new {_novoSubserieIndice = new LAB5GED.DOMAIN.Entidades.SubserieIndice(),_subserie=0},"class=btn btn-primary")        
+
+@Html.Grid(Model).Columns(c=>
+    {
+   
+     c.Add(i=>i.FK_Subserie.Rotulo_subserie).Titled("Subsérie");
+     c.Add(i => i.NomeIndice).Titled("Indexador");
+     c.Add(i => i.Obrigatorio).Titled("Obrigatório").Encoded(false).Sanitized(false).RenderValueAs(cl=>CustomRenderingOfColumn(cl));
+     //c.Add().Encoded(false).Sanitized(false).RenderValueAs(b => @Html.ActionLink("Editar", "Editar", new {registro = b.Registro }));
+     
+     
+    }).WithPaging(10).Sortable(true)
+
+
+@helper CustomRenderingOfColumn(LAB5GED.DOMAIN.Entidades.SubserieIndice item)
+{
+    if (item.Obrigatorio)
+    {
+    <span style="color:green;">SIM</span>
+    }
+    else
+    {
+     <span style="color:red;">NÃO</span>          
+    }
+}

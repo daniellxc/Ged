@@ -1,0 +1,38 @@
+﻿@model LAB5GED.DOMAIN.Entidades.Usuario
+
+<fieldset>
+    <legend>Informações do Usuário</legend>
+    @Html.HiddenFor(u=>u.Registro)
+    @Html.HiddenFor(u=>u.DataCadastro)
+    @Html.LabelFor(u=>u.NomeUsuario)<br />
+        @Html.EditorFor(u=>u.NomeUsuario)
+        @Html.ValidationMessageFor(u => u.NomeUsuario)<br />
+    @Html.LabelFor(u=>u.Login)<br />
+        @Html.EditorFor(u=>u.Login)
+        @Html.ValidationMessageFor(u => u.Login)<br />
+    
+    @if(Model.Registro == 0)
+    {
+        @Html.LabelFor(u=>u.Senha)<br />
+            @Html.EditorFor(u=>u.Senha)
+            @Html.ValidationMessageFor(u => u.Senha)<br />
+    }else
+    {
+    @Html.HiddenFor(u=>u.Senha)    
+    }
+    
+    @Html.LabelFor(u=>u.Ativo)<br />
+        @Html.EditorFor(u=>u.Ativo)
+        @Html.ValidationMessageFor(u => u.Ativo)<br />
+
+</fieldset>
+<input class="btn btn-primary" type="submit" value="Salvar" />
+@if(Model.Registro==0)
+{
+<input class="btn btn-primary" type="button" onclick="location.href='@Url.Action("Index","Usuario")'" value="Voltar" />
+}else
+{
+ @Html.ActionLink("Voltar", "Index", "Home", "", new {@class= "btn btn-primary" })   
+}&nbsp
+
+

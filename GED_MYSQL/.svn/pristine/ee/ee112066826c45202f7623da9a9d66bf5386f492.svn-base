@@ -1,0 +1,49 @@
+﻿using LAB5GED.DOMAIN.DAO.Business;
+using LAB5GED.DOMAIN.Entidades;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using System.Web.Security;
+
+
+namespace LAB5GED.MVC.Controllers
+{
+    public class LoginController : Controller
+    {
+        //
+        // GET: /Login/
+        private UsuarioBO _DAO = new UsuarioBO();
+
+        public ActionResult Index()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Logon(FormCollection fc)
+        {
+            Usuario usr = _DAO.GetUsuario(fc["login"], fc["senha"]);
+            if (usr.Registro != 0)
+            {
+                FormsAuthentication.SetAuthCookie(usr.Registro.ToString(), false);
+                return RedirectToAction("Index","Home");
+            }
+            
+                return View("Index");
+        }
+
+        public ActionResult Logout()
+        {
+            FormsAuthentication.SignOut();
+            return RedirectToAction("Index");
+
+        }
+
+        public Usuario GetUsuarioLogado()
+        {
+            return _DAO.GetByRegistro(int.Parse(HttpContext.User.Identity.Name));
+        }
+    }
+}

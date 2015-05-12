@@ -1,0 +1,12 @@
+﻿@model LAB5GED.DOMAIN.Entidades.Documento
+@using GridMvc.Html
+
+
+@Html.Grid(new LAB5GED.DOMAIN.DAO.Business.DocumentoBO().GetAll()).Columns(c=>
+    {
+        c.Add(d => d .Registro).Titled("Cod");
+        c.Add(d=>d.Caminho).Titled("Caminho");
+        c.Add().Encoded(false).Sanitized(false).RenderValueAs(b => @Html.ActionLink("Visualizar", "Visualizar", new {_registro = b.Registro }));
+    }).WithPaging(10).Sortable(true)
+
+ 

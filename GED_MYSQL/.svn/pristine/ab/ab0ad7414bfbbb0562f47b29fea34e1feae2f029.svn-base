@@ -1,0 +1,10 @@
+﻿
+
+<h2>Cadastrar Prazo de Guarda</h2>
+@using(Html.BeginForm("CadastrarPrazoGuarda", "PrazoGuarda")){
+  
+    @Html.EditorForModel()
+         
+    
+ 
+}

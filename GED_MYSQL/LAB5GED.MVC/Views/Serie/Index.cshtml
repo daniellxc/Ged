@@ -1,0 +1,51 @@
+﻿
+@model List<LAB5GED.DOMAIN.Entidades.Serie>
+@using GridMvc.Html
+@{
+    ViewBag.Title = "Index";
+}
+
+<script src="~/Scripts/jquery-1.7.1.min.js"></script>
+<script src="~/Scripts/jquery-1.7.1.js"></script>
+<script type="text/javascript">
+
+
+    function complete() {
+        
+        window.location.reload();
+    }
+
+</script>
+
+<h2>Controle de Séries</h2>
+
+@Html.ActionLink("Cadastrar Nova Série","Cadastrar",new LAB5GED.DOMAIN.Entidades.Serie(),new {@class="btn btn-primary"})        
+
+@Html.Grid(Model).Columns(c=>
+    {
+     c.Add(cl => cl.Registro).Titled("Registro");
+     c.Add(cl=>cl.Id_serie).Titled("ID Série");
+     c.Add(cl => cl.Rotulo_serie).Titled("Rótulo");
+     c.Add(cl => cl.FK_Subclasse.Rotulo_subclasse).Titled("Subclasse");
+     c.Add(cl => cl.FK_Subclasse.FK_Classe.Rotulo).Titled("Classe");
+     c.Add(cl => cl.Ativo).Titled("Ativo").Encoded(false).Sanitized(false).RenderValueAs(cl=>CustomRenderingOfColumn(cl));
+     c.Add().Encoded(false).Sanitized(false).RenderValueAs(b => @Html.ActionLink("Editar", "Editar", new {registro = b.Registro }));
+     c.Add().Encoded(false).Sanitized(false).RenderValueAs(b => @Ajax.ActionLink("Excluir", "Confirmacao", "Mensagem", new { _action = "Excluir", _controller = "Serie", _model = new { Id = b.Registro } }, new AjaxOptions
+     {
+         InsertionMode = InsertionMode.Replace,
+         UpdateTargetId = "aux"
+     }, ""));
+    }).WithPaging(10).Sortable(true).EmptyText("Não há séries cadastradas")
+
+
+@helper CustomRenderingOfColumn(LAB5GED.DOMAIN.Entidades.Serie item)
+{
+    if (item.Ativo)
+    {
+    <span style="color:green;">SIM</span>
+    }
+    else
+    {
+     <span style="color:red;">NÃO</span>          
+    }
+}

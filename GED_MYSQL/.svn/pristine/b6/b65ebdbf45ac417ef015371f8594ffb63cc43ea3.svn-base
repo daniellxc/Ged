@@ -1,0 +1,12 @@
+﻿@model LAB5GED.DOMAIN.Entidades.Serie
+
+<h2>Cadastrar Série</h2>
+@using(Html.BeginForm("CadastrarSerie", "Serie")){
+  
+    @Html.EditorForModel()
+         
+    
+ 
+}
+
+

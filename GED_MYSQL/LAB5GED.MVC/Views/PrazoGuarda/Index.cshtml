@@ -1,0 +1,63 @@
+﻿
+@model List<LAB5GED.DOMAIN.Entidades.PrazoGuarda>
+@using GridMvc.Html
+
+<script src="~/Scripts/jquery-1.7.1.min.js"></script>
+<script src="~/Scripts/jquery-1.7.1.js"></script>
+<script type="text/javascript">
+
+
+    function complete() {
+        
+        window.location.reload();
+    }
+
+</script>
+
+<h2>Controle de Prazo de Guarda</h2>
+
+@Html.ActionLink("Cadastrar Novo Prazo de Guarda","Cadastrar",new LAB5GED.DOMAIN.Entidades.PrazoGuarda())        
+@Html.Grid(Model).Columns(c=>
+    {
+     c.Add(pg => pg.FK_Subserie.Rotulo_subserie).Titled("Subsérie").RenderValueAs(pg => pg.FK_Subserie.Id_subserie + " - " + pg.FK_Subserie.Rotulo_subserie);
+     c.Add(pg => pg.Corrente).Titled("Corrente");
+     c.Add(pg=>pg.Itermediario).Titled("Intermediário");
+     c.Add(pg => pg.Permanente).Titled("Permanente").Encoded(false).Sanitized(false).RenderValueAs(pg=>Permanencia(pg));
+    
+
+     c.Add(pg => pg.Ativo).Titled("Ativo").Encoded(false).Sanitized(false).RenderValueAs(pg => CustomRenderingOfColumn(pg));
+     c.Add().Encoded(false).Sanitized(false).RenderValueAs(b => @Html.ActionLink("Editar", "Editar", new {registro = b.Registro }));
+     c.Add().Encoded(false).Sanitized(false).RenderValueAs(b => @Ajax.ActionLink("Excluir", "Confirmacao", "Mensagem", new { _action = "Excluir", _controller = "PrazoGuarda", _model = new { Id = b.Registro } }, new AjaxOptions
+     {
+         InsertionMode = InsertionMode.Replace,
+         UpdateTargetId = "aux"
+     },""));
+     
+    }).WithPaging(10).Sortable(true).EmptyText("Não há prazos de guarda cadastrados")
+
+
+@helper CustomRenderingOfColumn(LAB5GED.DOMAIN.Entidades.PrazoGuarda item)
+{
+    if (item.Ativo)
+    {
+    <span style="color:green;">SIM</span>
+    }
+    else
+    {
+     <span style="color:red;">NÃO</span>          
+    }
+}
+
+@helper Permanencia(LAB5GED.DOMAIN.Entidades.PrazoGuarda item){
+if(item.Permanente)
+{
+ <span style="color:green;">SIM</span>   
+}  
+else
+    {
+     <span style="color:red;">ELIMINAÇÃO</span>          
+    }  
+
+}
+
+@Html.ActionLink("Voltar", "Index", "Home", "", new {@class= "btn btn-primary" })

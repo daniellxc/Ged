@@ -1,0 +1,39 @@
+﻿@model List<LAB5GED.DOMAIN.Entidades.Caixa>
+@using GridMvc.Html
+
+
+
+<h2>Controle de Caixa</h2>
+
+
+@Html.ActionLink("Criar Nova Caixa", "Cadastrar", new LAB5GED.DOMAIN.Entidades.Caixa(), new {@class="btn btn-primary" })        
+@Html.Grid(Model).Columns(c=>
+    {
+        c.Add(a => a.IdCaixa).Titled("Identificação").Filterable(true);
+        c.Add(a => a.FK_Prateleira.Numero).Titled("Prateleira").Filterable(true);
+        c.Add(a => a.FK_Subserie.Id_subserie).Titled("Subsérie").Filterable(true);
+        c.Add(a => a.Documentos.Count).Titled("Volume Atual").RenderValueAs(a => a.Documentos.Count.ToString()).Filterable(true);
+     c.Add(a => a.Aberta).Titled("Disponibilidade").Encoded(false).Sanitized(false).RenderValueAs(cl => CustomRenderingOfColumn(cl)).Filterable(true);
+     c.Add().Encoded(false).Sanitized(false).RenderValueAs(b => @Html.ActionLink("Editar", "Editar", new {_registroCaixa = b.Registro }));
+     c.Add().Encoded(false).Sanitized(false).RenderValueAs(b => @Ajax.ActionLink("Excluir", "Confirmacao", "Mensagem", new { _action = "Excluir", _controller = "Caixa", _model = new { Id = b.Registro } }, new AjaxOptions
+     {
+         InsertionMode = InsertionMode.Replace,
+         UpdateTargetId = "aux"
+     }, ""));
+    }).WithPaging(20).Sortable(true).EmptyText("Não há caixas cadastradas")
+
+
+@helper CustomRenderingOfColumn(LAB5GED.DOMAIN.Entidades.Caixa item){
+    
+    if (item.Aberta)
+    {
+    <span style="color:green;">ABERTA</span>
+    }
+    else
+    {
+     <span style="color:red;">FECHADA</span>          
+    }
+    
+}
+
+ @Html.ActionLink("Voltar", "Index", "Home", "", new {@class= "btn btn-primary" })

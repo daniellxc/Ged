@@ -1,0 +1,37 @@
+﻿@model List<LAB5GED.DOMAIN.Entidades.Corredor>
+@using GridMvc.Html
+
+<script src="~/Scripts/jquery-1.7.1.min.js"></script>
+<script src="~/Scripts/jquery-1.7.1.js"></script>
+
+<h2>Controle de Corredores</h2>
+
+@Html.ActionLink("Criar Novo Corredor", "Cadastrar", new LAB5GED.DOMAIN.Entidades.Corredor(), new {@class="btn btn-primary" })        
+@Html.Grid(Model).Columns(c=>
+    {
+        c.Add(crd => crd.Numero).Titled("Corredor").Filterable(true);
+        c.Add(crd => crd.Descricao).Titled("Descrição").Filterable(true);
+        c.Add(crd => crd.Ativo).Titled("Disponibilidade").Encoded(false).Sanitized(false).RenderValueAs(cl => CustomRenderingOfColumn(cl)).Filterable(true);
+     c.Add().Encoded(false).Sanitized(false).RenderValueAs(b => @Html.ActionLink("Editar", "Editar", new {_registroCorredor = b.Registro }));
+     c.Add().Encoded(false).Sanitized(false).RenderValueAs(b => @Ajax.ActionLink("Excluir", "Confirmacao", "Mensagem", new { _action = "Excluir", _controller = "Corredor", _model = new { Id = b.Registro } }, new AjaxOptions
+     {
+         InsertionMode = InsertionMode.Replace,
+         UpdateTargetId = "aux"
+     }, ""));
+    }).WithPaging(20).Sortable(true).EmptyText("Não há corredores cadastrados")
+
+
+@helper CustomRenderingOfColumn(LAB5GED.DOMAIN.Entidades.Corredor item){
+    
+    if (item.Ativo)
+    {
+    <span style="color:green;">SIM</span>
+    }
+    else
+    {
+     <span style="color:red;">NÃO</span>          
+    }
+    
+}
+
+ @Html.ActionLink("Voltar", "Index", "Home", "", new {@class= "btn btn-primary" })

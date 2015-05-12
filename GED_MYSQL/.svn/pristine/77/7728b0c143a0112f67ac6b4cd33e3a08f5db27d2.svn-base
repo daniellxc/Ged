@@ -1,0 +1,35 @@
+﻿@model List<LAB5GED.DOMAIN.Entidades.Classe>
+@using GridMvc.Html
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Controle de Classes</h2>
+
+@Html.ActionLink("Cadastrar Nova Classe","Cadastrar",new LAB5GED.DOMAIN.Entidades.Classe(),new {@class="btn btn-primary"})        
+
+@Html.Grid(Model).Columns(c=>
+    {
+     c.Add(cl => cl.Registro).Titled("Registro");
+     c.Add(cl=>cl.Id_classe).Titled("ID Classe");
+     c.Add(cl => cl.Rotulo).Titled("Rótulo");
+     c.Add(cl => cl.DataAbertura).Titled("Data Abertura");
+     c.Add(cl => cl.Ativo).Titled("Ativo").Encoded(false).Sanitized(false).RenderValueAs(cl=>CustomRenderingOfColumn(cl));
+     c.Add().Encoded(false).Sanitized(false).RenderValueAs(b => @Html.ActionLink("Editar", "Editar", new {registro = b.Registro }));
+     
+     
+    }).WithPaging(10).Sortable(true)
+
+
+@helper CustomRenderingOfColumn(LAB5GED.DOMAIN.Entidades.Classe item)
+{
+    if (item.Ativo)
+    {
+    <span style="color:green;">SIM</span>
+    }
+    else
+    {
+     <span style="color:red;">NÃO</span>          
+    }
+}

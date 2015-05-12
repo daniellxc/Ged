@@ -1,0 +1,40 @@
+﻿@model LAB5GED.DOMAIN.Entidades.Corredor
+@{
+    string sugestao = (new LAB5GED.DOMAIN.DAO.Business.CorredorBO().GetAll().Count + 1).ToString();
+    
+}
+
+
+<script src="~/Scripts/jquery-1.7.1.min.js"></script>
+<script src="~/Scripts/jquery-1.7.1.js"></script>
+<script type="text/javascript">
+    var test = @Model.Registro.ToString() 
+    
+    $(document).ready(function () 
+    {
+        
+
+        if(test=="0")
+            $("#Numero").val(@sugestao);
+    })
+
+</script>
+
+
+@Html.ValidationSummary(true)
+<fieldset>
+    <legend>Dados do Corredor</legend>
+
+    @Html.LabelFor(c=>c.Numero)<br />
+        @Html.EditorFor(c=>c.Numero)
+        @Html.ValidationMessageFor(c=>c.Numero)<br />
+     @Html.LabelFor(c=>c.Descricao)<br />
+        @Html.EditorFor(c=>c.Descricao)
+        @Html.ValidationMessageFor(c=>c.Descricao)<br />
+     @Html.LabelFor(c=>c.Ativo)<br />
+        @Html.EditorFor(c=>c.Ativo)
+        @Html.ValidationMessageFor(c=>c.Ativo)<br />
+
+</fieldset>
+ <input class="btn btn-primary" type="submit" value="Salvar" />
+ <input class="btn btn-primary" type="button" onclick="location.href='@Url.Action("Index","Corredor")'" value="Voltar" />

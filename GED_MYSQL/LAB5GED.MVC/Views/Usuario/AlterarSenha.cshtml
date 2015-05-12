@@ -1,0 +1,23 @@
+﻿@model LAB5GED.DOMAIN.Entidades.Usuario
+@{
+    Model.Senha = "";
+
+}
+<h2>Alterar Senha</h2>
+
+@using (Html.BeginForm("ExecutaAlterarSenha", "Usuario"))
+{
+ 
+    @Html.HiddenFor(u=>u.Registro)
+    @Html.HiddenFor(u=>u.NomeUsuario)
+    @Html.HiddenFor(u=>u.Login)
+    <label>Nova Senha</label><br />
+        @Html.EditorFor(u=>u.Senha)
+        @Html.ValidationMessageFor(u => u.Senha)<br />
+    @Html.HiddenFor(u=>u.Ativo)<br />
+
+    <input class="btn btn-primary" type="button" onclick="location.href='@Url.Action("Index","Home")'" value="Voltar" />
+     <input type="submit" value="Alterar" class="btn btn-primary"/>   
+}
+
+

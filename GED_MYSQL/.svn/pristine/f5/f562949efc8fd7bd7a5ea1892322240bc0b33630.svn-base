@@ -1,0 +1,39 @@
+﻿using LAB5GED.DOMAIN.Entidades;
+using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
+using System.Text;
+
+namespace LAB5GED.DOMAIN.AppContext
+{
+   public class Contexto:DbContext
+    {
+        #region DbSets
+
+       public DbSet<Classe> Classes { get; set; }
+       public DbSet<PrazoGuarda> PrazosGuarda { get; set; }
+       public DbSet<Subclasse> Subclasses{ get; set; }
+       public DbSet<Serie> Series { get; set; }
+       public DbSet<Subserie> Subseries { get; set; }
+       public DbSet<TipoDestinacaoSubserie> TiposDestinacaoSubseries { get; set; }
+
+
+ 
+        #endregion
+
+        public Contexto() : base("Contexto") { }
+
+
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Subserie>()
+                .Property(ss=>ss.Subserie_pai).IsOptional();
+        
+            base.OnModelCreating(modelBuilder);
+            base.Configuration.LazyLoadingEnabled = true;
+           
+        }
+    }
+}

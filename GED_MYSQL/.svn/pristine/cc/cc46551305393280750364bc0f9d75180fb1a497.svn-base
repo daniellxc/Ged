@@ -1,0 +1,85 @@
+﻿using LAB5GED.DOMAIN.Acessorio;
+using LAB5GED.DOMAIN.DAO.Business;
+using LAB5GED.DOMAIN.Entidades;
+using LAB5GED.MVC.Acessorio;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Transactions;
+using System.Web;
+using System.Web.Mvc;
+
+namespace LAB5GED.MVC.Controllers
+{
+     [Authorize]
+    public class DocumentoController : Controller
+    {
+        //
+        // GET: /Documento/
+
+        DocumentoBO _DAO = new DocumentoBO();
+
+        public ActionResult Index()
+        {
+            return View(_DAO.GetAll());
+        }
+
+        /// <summary>
+        /// NÃO PERMITE EDIÇÃO!!!
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult Cadastrar()
+        {
+            return View(new Documento());
+        }
+
+        public ActionResult CadastrarDocumento(Documento _novoDocumento, HttpPostedFileBase inputFile)
+        {
+            bool sucesso = false;
+            using (TransactionScope scope = new TransactionScope())
+            {
+                try
+                {
+
+                    HttpPostedFileBase arquivo = Request.Files[0];
+                    Stream str = arquivo.InputStream;
+                    if (str.Length > 0)
+                    {
+                        _DAO.SalvarDocumento(_novoDocumento, str);
+                        _DAO.RegistrarDocumento(_novoDocumento.Registro, Seguranca.UsuarioLogado().Registro);
+                        sucesso = true;
+                    }
+                    else throw new Erros.ErroGeral("Nenhum arquivo selecionado.");
+                }
+
+
+
+                catch (Exception ex)
+                {
+                    sucesso = false;
+                    MetodosUtilidadeGeral.MensagemDeErro(ex.Message, Response);
+                    //return View("Cadastrar");
+                }
+
+                if (sucesso)
+                {
+                    scope.Complete();
+                    return RedirectToAction("Index");
+                }
+                else return View("Cadastrar");
+
+            }
+        }
+
+        public FileStreamResult Visualizar(int _registro)
+        {
+            Documento doc = _DAO.GetByRegistro(_registro);
+
+            return File(_DAO.GetStreamDocumento(doc), "application/pdf");
+
+        }
+    }
+
+    
+}

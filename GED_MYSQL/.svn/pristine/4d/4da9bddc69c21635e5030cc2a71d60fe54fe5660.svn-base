@@ -1,0 +1,47 @@
+﻿@model List<LAB5GED.DOMAIN.Entidades.SubserieIndice>
+@using GridMvc.Html
+
+<script src="~/Scripts/jquery-1.7.1.min.js"></script>
+<script src="~/Scripts/jquery-1.7.1.js"></script>
+<script type="text/javascript">
+
+
+    function complete() {
+        
+        window.location.reload();
+    }
+
+</script>
+<h2>Controle de Indexadores</h2>
+
+@Html.ActionLink("Cadastrar Novo Indexador","Cadastrar",new {_novoSubserieIndice = new LAB5GED.DOMAIN.Entidades.SubserieIndice(),_subserie=0},new {@class="btn btn-primary"})        
+
+@Html.Grid(Model).Columns(c=>
+    {
+   
+    
+     c.Add(i => i.NomeIndice).Titled("Indexador");
+     c.Add(i => i.FK_Subserie.Rotulo_subserie).Titled("Subsérie");
+     c.Add(i => i.Obrigatorio).Titled("Obrigatório").Encoded(false).Sanitized(false).RenderValueAs(cl=>CustomRenderingOfColumn(cl));
+     c.Add().Encoded(false).Sanitized(false).RenderValueAs(b => @Ajax.ActionLink("Excluir", "Confirmacao", "Mensagem", new { _action = "Excluir", _controller = "SubserieIndice", _model = new { Id = b.Registro } }, new AjaxOptions
+     {
+         InsertionMode = InsertionMode.Replace,
+         UpdateTargetId = "aux"
+     }, ""));
+     
+     
+    }).WithPaging(10).Sortable(true)
+
+
+@helper CustomRenderingOfColumn(LAB5GED.DOMAIN.Entidades.SubserieIndice item)
+{
+    if (item.Obrigatorio)
+    {
+    <span style="color:green;">SIM</span>
+    }
+    else
+    {
+     <span style="color:red;">NÃO</span>          
+    }
+}
+@Html.ActionLink("Voltar", "Index", "Home", "", new {@class= "btn btn-primary" })

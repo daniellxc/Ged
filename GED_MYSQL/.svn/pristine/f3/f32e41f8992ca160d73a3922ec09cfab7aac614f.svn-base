@@ -1,0 +1,58 @@
+﻿using LAB5GED.DOMAIN.Acessorio;
+using LAB5GED.DOMAIN.DAO.Business;
+using LAB5GED.DOMAIN.Entidades;
+using LAB5GED.MVC.Acessorio;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+
+namespace LAB5GED.MVC.Controllers
+{
+    public class SubserieIndiceValorController : Controller
+    {
+        //
+        // GET: /SubserieIndiceValor/
+
+        private SubserieIndiceValorBO _DAO = new SubserieIndiceValorBO();
+        public ActionResult Index()
+        {
+            return View();
+        }
+
+        public ActionResult Indexacao()
+        {
+           
+            return View("Indexacao",new DocumentoBO().GetByRegistro(11));
+
+        }
+
+
+
+        public ActionResult Indexar(int Registro, List<int> regIndex, List<string> valor)
+        {
+            if (!ModelState.IsValid)
+                return View("Indexacao", new DocumentoBO().GetByRegistro(11));
+            try
+            {
+                SubserieIndiceValor _valorIndice;
+                for (int i = 0; i < regIndex.Count; i++)
+                {
+                     _valorIndice = new SubserieIndiceValor();
+                    _valorIndice.Documento = Registro;
+                    _valorIndice.Indice = regIndex[i];
+                    _valorIndice.Valor = valor[i];
+                    _DAO.SalvarSubserieIndiceValor(_valorIndice);
+                }
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                MetodosUtilidadeGeral.MensagemDeErro(ex.Message, Response);
+                return View("Indexacao", new DocumentoBO().GetByRegistro(Registro)) ;
+            }
+        }
+
+    }
+}

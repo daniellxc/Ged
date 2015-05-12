@@ -1,0 +1,11 @@
+﻿@model List<LAB5GED.DOMAIN.Entidades.Documento>
+@using GridMvc.Html
+
+
+<h2>Documentos Não Armazenados</h2>
+
+
+<div>@Html.Partial("partialGridDocumentoNaoArmazenado",Model) </div>
+
+
+ @Html.ActionLink("Voltar", "Index", "Home", "", new {@class= "btn btn-primary" })

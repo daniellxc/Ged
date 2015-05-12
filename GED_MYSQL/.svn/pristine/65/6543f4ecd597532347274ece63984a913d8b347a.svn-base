@@ -1,0 +1,33 @@
+﻿@model LAB5GED.DOMAIN.Entidades.PrazoGuarda
+@Html.ValidationSummary(true)
+
+@{
+    
+    SelectList subseriesAtivas = new SelectList(new LAB5GED.DOMAIN.DAO.Business.SubserieBO().GetSubseriesAtivaComRegistro(), "Registro", "Rotulo_subserie");
+}
+<fieldset>
+    <legend>Dados do Prazo de Guarda</legend>
+    @Html.HiddenFor(pg=>pg.Registro)
+
+    @Html.LabelFor(pg=>pg.Corrente) <br />
+    @Html.EditorFor(pg=>pg.Corrente) 
+        @Html.ValidationMessageFor(pg=>pg.Corrente)<br />
+    @Html.LabelFor(pg=>pg.Itermediario) <br />
+    @Html.EditorFor(pg=>pg.Itermediario) 
+        @Html.ValidationMessageFor(pg=>pg.Itermediario)<br />
+    @Html.LabelFor(pg=>pg.Permanente) <br />
+    @Html.EditorFor(pg=>pg.Permanente) 
+        @Html.ValidationMessageFor(pg=>pg.Permanente)<br />
+
+    @Html.LabelFor(pg=>pg.Subserie) <br />
+    @Html.DropDownListFor(pg=>pg.Subserie,subseriesAtivas) 
+        @Html.ValidationMessageFor(pg=>pg.Subserie)<br />
+
+    @Html.LabelFor(pg=>pg.Ativo) <br />
+    @Html.EditorFor(pg=>pg.Ativo) 
+        @Html.ValidationMessageFor(pg=>pg.Ativo)<br />
+        
+</fieldset>
+<br />
+    <input class="btn btn-primary" type="button" onclick="location.href='@Url.Action("Index","PrazoGuarda")'" value="Voltar" />
+    <input class="btn btn-primary" type="submit" value="Cadastrar Prazo de Guarda" />

@@ -1,0 +1,42 @@
+﻿@model LAB5GED.DOMAIN.Entidades.Documento
+
+
+@{
+ 
+    LAB5GED.DOMAIN.Entidades.DocumentoManipulacao _captura = new LAB5GED.DOMAIN.Entidades.DocumentoManipulacao();
+  
+    try{
+            _captura = new LAB5GED.DOMAIN.DAO.Business.DocumentoManipulacaoBO().ManipulacaoCapturaDeUmDocumento(Model.Registro);
+           
+            
+    }catch(Exception ex)
+    {
+        LAB5GED.MVC.Acessorio.MetodosUtilidadeGeral.MensagemDeErro(ex.Message, Response);
+        return;
+    }
+    
+ }
+
+
+    
+<table class="table table-striped table-hover" style="width:50%">
+    <tr>
+        <td><label><b>Id do Documento</b></label></td>
+        <td>@Model.Registro</td>
+    </tr>
+    
+    <tr>
+        <td style="font-weight: bold">@Html.LabelFor(doc => doc.Subserie, new { @style= "font-weight: bold" })</b></td>
+        <td>@Model.FK_Subserie.Id_subserie - @Model.FK_Subserie.Rotulo_subserie </td>
+    </tr>
+   
+    <tr>
+        <td>@Html.LabelFor(doc => doc.DataCriacao, new { @style = "font-weight: bold" })</td>
+        <td>@Model.DataCriacao</td>
+    </tr>
+
+    <tr>
+        <td>@Html.LabelFor(doc=> doc.Descricao,new { @style = "font-weight: bold" })</td>
+        <td>@Model.Descricao</td>
+    </tr>
+</table>

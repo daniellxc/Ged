@@ -1,0 +1,124 @@
+﻿using LAB5GED.DOMAIN.Acessorio;
+using LAB5GED.DOMAIN.DAO.Interfaces;
+using LAB5GED.DOMAIN.Entidades;
+using System;
+using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
+using System.Data.Entity.Validation;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Text;
+
+namespace LAB5GED.DOMAIN.DAO.Business
+{
+    public class DocumentoBO
+    {
+        private class DocumentoDAO : AbstracCrudDAO<Documento>, IDocumentoDAO
+        {
+            public DocumentoDAO()
+            {
+
+            }
+        }
+
+
+        private DocumentoDAO _DAO = new DocumentoDAO();
+
+        public List<Documento> GetAll()
+        {
+            return _DAO.GetAll();
+        }
+
+        public byte[] PrepararArquivo(string _caminhoArquivo)
+        {
+            try
+            {
+                FileStream fs = new FileStream(_caminhoArquivo, FileMode.Open, FileAccess.Read);
+                BinaryReader br = new BinaryReader(fs);
+                byte[] Arquivo = br.ReadBytes((int)fs.Length);
+                br.Close();
+                fs.Close();
+
+                return Arquivo;
+            }
+            catch (IOException ex)
+            {
+                throw new Erros.ErroGeral("Ocorreu um erro ao manipular o arquivo. Detalhes: " + ex.Message);
+            }
+        }
+
+
+        public byte[] GerarStreamBytes(Stream _streamArquivo)
+        {
+            try
+            {
+            
+                BinaryReader br = new BinaryReader(_streamArquivo);
+                byte[] Arquivo = br.ReadBytes((int)_streamArquivo.Length);
+                br.Close();
+                
+
+                return Arquivo;
+            }
+            catch (IOException ex)
+            {
+                throw new Erros.ErroGeral("Ocorreu um erro ao manipular o arquivo. Detalhes: " + ex.Message);
+            }
+        }
+
+
+        public Documento GetByRegistro(int _registro)
+        {
+            return _DAO.Find(d => d.Registro == _registro).First();
+        }
+
+        public void GerarPdfEmDiretorio(Documento _documento)
+        {
+            FileStream Fs = new FileStream(@"C:\Pdf.pdf", FileMode.Create);
+            Fs.Write(_documento.Dados, 0, _documento.Dados.Length);
+            Process.Start(@"C:\Pdf.pdf");
+            Fs.Close();
+        }
+
+        public MemoryStream GetStreamDocumento(Documento _documento)
+        {
+            MemoryStream ms = new MemoryStream(_documento.Dados, 0, _documento.Dados.Length);
+            return ms;
+        }
+
+        public void SalvarDocumento(Documento _novoDocumento, Stream strm)
+        {
+            try
+            {
+                _novoDocumento.Dados = GerarStreamBytes(strm);
+               
+                if (_novoDocumento.Registro == 0)
+                {
+
+                    _novoDocumento.DataCriacao = DateTime.Now;
+                    _DAO.Add(_novoDocumento);
+                    _DAO.SaveChanges();
+                }
+                else
+                {
+                    _DAO.Atualizar(_novoDocumento, _novoDocumento.Registro);
+
+                }
+
+            }
+            catch (DbEntityValidationException dbex)
+            {
+                throw new Erros.ErroDeValidacao(dbex);
+            }
+            catch (DbUpdateException dbuex)
+            {
+                throw new Erros.ErroGeral("Não foi possível concluir a operação. Verifique se o item não foi cadastrado previamente.");
+            }
+            catch (Exception ex)
+            {
+                throw new Erros.ErroGeral("Erro inesperado. " + ex.Message);
+            }
+        }
+    }
+}

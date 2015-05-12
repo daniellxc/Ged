@@ -1,0 +1,49 @@
+﻿@model List<LAB5GED.DOMAIN.Entidades.Subserie>
+@using GridMvc.Html
+
+
+<h2>Controle de Subséries</h2>
+
+@Html.ActionLink("Cadastrar Nova  Subsérie","Cadastrar",new LAB5GED.DOMAIN.Entidades.Subserie())        
+
+@Html.Grid(Model).Columns(c=>
+    {
+        c.Add(ss => ss.Registro).Titled("Registro");
+        c.Add(ss => ss.Id_subserie).Titled("ID Subsérie");
+        c.Add(ss => ss.Rotulo_subserie).Titled("Rótulo");
+        c.Add(ss => ss.FK_Serie.Rotulo_serie).Titled("Série");
+        c.Add(ss => ss.FK_Subserie_pai.Rotulo_subserie).Titled("Subsérie Pai").Encoded(false).Sanitized(false).RenderValueAs(ss=>TratarCampoSubseriePai(ss));
+        c.Add(ss => ss.Ativo).Titled("Ativo").Encoded(false).Sanitized(false).RenderValueAs(ss => TratarCampoAtivo(ss));
+        c.Add().Encoded(false).Sanitized(false).RenderValueAs(b => @Html.ActionLink("Criar Indexador", "CadastrarIndexador", new { registroSubserie = b.Registro }));
+     c.Add().Encoded(false).Sanitized(false).RenderValueAs(b => @Html.ActionLink("Editar", "Editar", new {registro = b.Registro }));
+     
+     
+    }).WithPaging(10).Sortable(true)
+
+
+@helper TratarCampoAtivo(LAB5GED.DOMAIN.Entidades.Subserie item)
+{
+    if (item.Ativo)
+    {
+    <span style="color:green;">SIM</span>
+    }
+    else
+    {
+     <span style="color:red;">NÃO</span>          
+    }
+}
+
+
+@helper TratarCampoSubseriePai(LAB5GED.DOMAIN.Entidades.Subserie item){
+    
+if(item.Subserie_pai == null)
+{
+    
+ <span>---</span>   
+    
+}else
+{
+
+   <span>@item.FK_Subserie_pai.Rotulo_subserie</span>    
+}
+}

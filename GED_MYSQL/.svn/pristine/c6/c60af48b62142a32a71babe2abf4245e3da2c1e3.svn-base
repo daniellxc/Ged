@@ -1,0 +1,6 @@
+﻿@model LAB5GED.DOMAIN.Entidades.Documento
+
+@using (Html.BeginForm("CadastrarDocumento", "Documento", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.EditorForModel();
+}

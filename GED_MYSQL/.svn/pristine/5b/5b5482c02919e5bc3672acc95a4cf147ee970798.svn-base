@@ -1,0 +1,28 @@
+﻿@model LAB5GED.DOMAIN.Entidades.SubserieIndice
+
+@{ 
+    SelectList subseriesAtivas = new SelectList(new LAB5GED.DOMAIN.DAO.Business.SubserieBO().GetSubseriesAtivaComID(),"Registro","Rotulo_subserie");
+}
+<h2>Indexação</h2>
+
+<fieldset>
+    <legend>Dados do Índice</legend>
+
+    @Html.HiddenFor(i=>i.Registro)
+
+    @Html.LabelFor(i => i.Subserie)<br />
+        @Html.DropDownListFor(i=>i.Subserie,subseriesAtivas)
+        @Html.ValidationMessageFor(i=>i.Subserie)<br />
+    @Html.LabelFor(i=>i.NomeIndice)<br />
+        @Html.EditorFor(i=>i.NomeIndice)
+        @Html.ValidationMessageFor(i=>i.NomeIndice)<br />
+    @Html.LabelFor(i=>i.DescricaoIndice)<br />
+        @Html.EditorFor(i=>i.DescricaoIndice)
+        @Html.ValidationMessageFor(i=>i.DescricaoIndice)<br />
+    @Html.LabelFor(i=>i.Obrigatorio)<br />
+        @Html.EditorFor(i=>i.Obrigatorio)
+        @Html.ValidationMessageFor(i=>i.Obrigatorio)<br />
+</fieldset>
+<input class="btn btn-primary" type="submit" value="Salvar" />
+  <input class="btn btn-primary" type="button" onclick="location.href='@Url.Action("Index","SubserieIndice")'" value="Voltar" />
+ 

@@ -1,0 +1,13 @@
+﻿@model List<LAB5GED.DOMAIN.Entidades.Caixa>
+@using GridMvc.Html
+
+@Html.Grid(Model).Columns(c=>
+    {
+        c.Add(d => d.IdCaixa).Titled("Descrição").Filterable(true);
+        c.Add(d => d.FK_Prateleira.FK_Estante.FK_Corredor.Numero).Titled("Corredor");
+        c.Add(d => d.FK_Prateleira.FK_Estante.Numero).Titled("Estante");
+        c.Add(d => d.Prateleira).Titled("Prateleira");
+        c.Add(d => d.FK_Subserie.FK_Serie.Id_serie).Titled("Subsérie").RenderValueAs(d => d.FK_Subserie.Id_subserie + " - " + d.FK_Subserie.Rotulo_subserie);
+        c.Add().Encoded(false).Sanitized(false).RenderValueAs(b => @Html.ActionLink("Abrir", "ListarDocumentosNaoRevisados", "Documento", new { _registroCaixa = b.Registro }, ""));
+       
+    }).WithPaging(10).Sortable(true).EmptyText("Nenhuma caixa com documento não revisado")
