@@ -2,7 +2,7 @@
 using LAB5GED.DOMAIN.DAO.Business;
 using LAB5GED.DOMAIN.Entidades;
 using LAB5GED.MVC.Acessorio;
-using Sistema.Acadiesp.Entidades;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -132,12 +132,12 @@ namespace LAB5GED.MVC.Controllers
 
         }
 
-        [HttpPost]        
-        public JsonResult ConsultarAluno(string _nome)
-        {         
-            IEnumerable<Pessoa> alunos = new Sistema.Acadiesp.DAO.business.AlunoBO().GetAlunosPorNome(_nome).Select(a => a.FK_Pessoa);
-         return Json(alunos);
-        }
+        //[HttpPost]        
+        //public JsonResult ConsultarAluno(string _nome)
+        //{         
+        //    IEnumerable<Pessoa> alunos = new Sistema.Acadiesp.DAO.business.AlunoBO().GetAlunosPorNome(_nome).Select(a => a.FK_Pessoa);
+        // return Json(alunos);
+        //}
 
     }
 }

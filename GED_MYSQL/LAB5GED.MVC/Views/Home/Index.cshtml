@@ -9,3 +9,48 @@
   <p>@Html.ActionLink("Novo Documento", "Cadastrar", "Documento", "", new {@class="btn btn-primary" })</p>
 </div>
 
+
+@*<div id="tree" class="container">
+    <ul class="nav nav-pills nav-stacked">
+        @foreach (LAB5GED.DOMAIN.Entidades.Classe classe in new LAB5GED.DOMAIN.DAO.Business.ClasseBO().GetClassesAtivas())
+        {
+
+            <li class="dropdown">
+               <a class="dropdown-toggle" data-toggle="dropdown" href="#">@classe.Id_classe - @classe.Rotulo</a>
+
+                <ul class="dropdown-menu">
+                    @foreach (LAB5GED.DOMAIN.Entidades.Subclasse subClasse in new LAB5GED.DOMAIN.DAO.Business.SubclasseBO().GetSubclassesAtivas().Where(s => s.Classe == classe.Registro).ToList())
+                    {
+                        <li>@subClasse.Id_subclasse - @subClasse.Rotulo_subclasse</li>
+                    }
+                </ul>
+            </li>
+
+        }
+    </ul>
+
+</div>*@
+<link href="~/Content/treegrid/css/jquery.treegrid.css" rel="stylesheet" />
+
+<table class="tree">
+    <tr class="treegrid-1">
+        <td>Root node</td>
+      
+    </tr>
+    <tr class="treegrid-2 treegrid-parent-1">
+        <td>Node 1-1</td>
+        
+    </tr>
+    <tr class="treegrid-3 treegrid-parent-1">
+        <td>Node 1-2</td>
+       
+    </tr>
+    <tr class="treegrid-4 treegrid-parent-3">
+        <td>Node 1-2-1</td>
+        
+    </tr>
+</table>
+
+<script type="text/javascript">
+    $('.tree').treegrid();
+</script>

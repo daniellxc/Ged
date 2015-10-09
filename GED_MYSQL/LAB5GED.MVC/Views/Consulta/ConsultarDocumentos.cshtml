@@ -1,0 +1,56 @@
+﻿@{
+    ViewBag.Title = "Consultar Documentos";
+    SelectList classes = new SelectList(new LAB5GED.DOMAIN.DAO.Business.ClasseBO().GetClassesAtivasComID(), "Registro", "Rotulo");
+    
+}
+
+<script src="~/Scripts/libscripts.js"></script>
+    <h2>Consultar Documentos</h2>
+    <div class="row">
+        <div class="col-lg-2">
+            <div class="form-group">
+                @Html.Label("Classe")
+                @Html.DropDownList("classe", classes, "---", new { @onChange = "return BindDDL(this,subclasse,'Consulta','GetSubclasses');" })
+            </div>
+        </div>
+
+        <div class="col-lg-2">
+            <div class="form-group">
+                @Html.Label("Subclasse")<br />
+                @Html.DropDownList("subclasse", new SelectList(string.Empty, "Value", "Text"), "escolha uma classe", new { @onchange = "return BindDDL(this,serie,'Consulta','GetSeries');" })
+            </div>
+        </div>
+    </div>
+
+<div class="row">
+    <div class="col-lg-2">
+        <div class="form-group">
+            @Html.Label("Série")<br />
+            @Html.DropDownList("serie", new SelectList(string.Empty, "Value", "Text"), "escolha uma subclasse", new { @onchange = "return BindDDL(this,subserie,'Consulta','GetSubseries');" })
+        </div>
+    </div>
+
+    <div class="col-lg-2">
+        <div class="form-group">
+            @Html.Label("Subsérie")<br />
+            @Html.DropDownList("subserie", new SelectList(string.Empty, "Value", "Text"), "escolha uma série", new { @onchange = "return BindDDL(this,indice,'Consulta','GetSubserieIndices');" })
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-2">
+        <div class="form-group">
+            @Html.Label("Índice de pesquisa")<br />
+            @Html.DropDownList("indice", new SelectList(string.Empty, "Value", "Text"), "---")
+        </div>
+    </div>
+
+    <div class="col-lg-2">
+        <div class="form-group">
+            @Html.Label("Chave")<br />
+            @Html.TextBox("valor","",new{@style="width:400px"})
+        </div>
+    </div>
+</div>
+

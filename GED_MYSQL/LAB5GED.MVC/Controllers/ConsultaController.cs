@@ -3,6 +3,7 @@ using LAB5GED.DOMAIN.Entidades;
 using LAB5GED.MVC.Acessorio;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.SqlServer;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -25,16 +26,60 @@ namespace LAB5GED.MVC.Controllers
             return View();
         }
 
-        [HttpPost]
-        public PartialViewResult ConsultaAluno(string _nomeAluno)
-        {
-            return PartialView("ConsultaAluno", new Sistema.Acadiesp.DAO.business.AlunoBO().GetAlunosPorNome(_nomeAluno));
-        }
+        //[HttpPost]
+        //public PartialViewResult ConsultaAluno(string _nomeAluno)
+        //{
+        //    return PartialView("ConsultaAluno", new Sistema.Acadiesp.DAO.business.AlunoBO().GetAlunosPorNome(_nomeAluno));
+        //}
 
         public PartialViewResult DocumentosDoAluno(string _matriculaAluno)
         {
            // List<Documento> d = new DocumentoBO().DocumentosDeUmaMatricula(_matriculaAluno);
             return PartialView("DocumentosDoAluno", new DocumentoBO().DocumentosDeUmaMatricula(_matriculaAluno));
+        }
+
+
+        public ActionResult ConsultarDocumentos()
+        {
+            return View();
+        }
+
+
+        public JsonResult GetSubclasses(string id)
+        {
+            if (id == "")
+                id = "0";
+            int classe = int.Parse(id);
+            return Json(new SelectList(new SubclasseBO().GetSubclassesAtivas().Where(s => s.Classe == classe).ToList(), "Registro", "Rotulo_subclasse"));
+
+        }
+
+        public JsonResult GetSeries(string id)
+        {
+            if (id == "")
+                id = "0";
+            int subclasse = int.Parse(id);
+            return Json(new SelectList(new SerieBO().GetSeriesAtivas().Where(s => s.Subclasse == subclasse).ToList(), "Registro", "Rotulo_serie"));
+
+        }
+
+
+        public JsonResult GetSubseries(string id)
+        {
+            if (id == "")
+                id = "0";
+            
+            return Json(new SelectList(new SubserieBO().GetSubseriesAtivasDeUmaSerie(int.Parse(id)), "Registro", "Rotulo_subserie"));
+
+        }
+
+        public JsonResult GetSubserieIndices(string id)
+        {
+            if (id == "")
+                id = "0";
+
+            return Json(new SelectList(new SubserieIndiceBO().GetIndexadoresDeUmaSubserie(int.Parse(id)), "Registro", "NomeIndice"));
+
         }
 
     }
