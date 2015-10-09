@@ -49,6 +49,8 @@ namespace LAB5GED.DOMAIN.AppContext
                 .Property(ss=>ss.Subserie_pai).IsOptional();
 
             modelBuilder.Entity<Documento>().Property(d => d.Caixa).IsOptional();
+
+           
                 
 
 
