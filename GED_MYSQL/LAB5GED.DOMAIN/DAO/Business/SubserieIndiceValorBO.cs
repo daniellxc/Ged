@@ -108,6 +108,16 @@ namespace LAB5GED.DOMAIN.DAO.Business
         }
 
 
+        #region Consultas
+
+        public List<SubserieIndiceValor> ListarIndexacao(int index, string valor)
+        {
+            return _DAO.Find(ix => ix.Indice == index && ix.Valor == valor);
+        }
+
+        #endregion
+
+
 
     }
 }

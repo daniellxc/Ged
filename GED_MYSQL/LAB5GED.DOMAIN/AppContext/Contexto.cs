@@ -84,8 +84,8 @@ namespace LAB5GED.DOMAIN.AppContext
           .WithMany(u=>u.Grupos)
           .Map(u =>
           {
-          u.MapLeftKey("ACAO");
-          u.MapRightKey("GRUPO");
+          u.MapLeftKey("GRUPO");
+          u.MapRightKey("ACAO");
           u.ToTable("tb_acao_grupo");
          });
 
