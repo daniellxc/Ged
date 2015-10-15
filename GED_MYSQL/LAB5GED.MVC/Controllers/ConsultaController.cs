@@ -38,13 +38,20 @@ namespace LAB5GED.MVC.Controllers
             return PartialView("DocumentosDoAluno", new DocumentoBO().DocumentosDeUmaMatricula(_matriculaAluno));
         }
 
+        public PartialViewResult ConsultarDocumentoIndex(int indice, string valor)
+        {
+            return PartialView("partialGridDocumento", new SubserieIndiceValorBO().ListarIndexacao(indice, valor).Select(d => d.FK_Documento).ToList());
+        }
 
+        [PermissaoFiltro("Consulta Detalhada")]
         public ActionResult ConsultarDocumentos()
         {
             return View();
         }
 
 
+
+        #region Consultas JSONS
         public JsonResult GetSubclasses(string id)
         {
             if (id == "")
@@ -82,5 +89,6 @@ namespace LAB5GED.MVC.Controllers
 
         }
 
+        #endregion
     }
 }

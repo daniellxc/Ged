@@ -38,7 +38,7 @@ function BindDDL(trigger, target, controller, action) {
 
             });
             $(target).append('<option value="">---</option>');
-            
+            $(target).change();
             return false;
        
    

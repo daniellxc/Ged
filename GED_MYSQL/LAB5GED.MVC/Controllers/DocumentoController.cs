@@ -49,6 +49,7 @@ namespace LAB5GED.MVC.Controllers
 
         }
 
+        [PermissaoFiltro("Editar Documento")]
         public ActionResult Editar(int _registroDocumento)
         {
 

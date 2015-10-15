@@ -10,7 +10,7 @@
         c.Add(d => d.FK_Subserie.Rotulo_subserie).Titled("Nome da Subsérie").Filterable(true);
         c.Add(d => d.FK_Caixa.Descricao).Titled("Caixa").Encoded(false).Sanitized(false).RenderValueAs(d => Caixa(d));
         c.Add().Titled("Revisado").Encoded(false).Sanitized(false).RenderValueAs(cl => CustomRenderingOfColumn(cl));
-        c.Add().Encoded(false).Sanitized(false).RenderValueAs(b => @Html.ActionLink("Visualizar", "Visualizar", "Documento", new { _registro = b.Registro }, new {@target = "_blank"}));
+        c.Add().Encoded(false).Sanitized(false).RenderValueAs(b => @Html.ActionLink("Visualizar", "ListarDigitalizacoesArmazenadas", "DocumentoDigitalizacao", new { _registroDocumento = b.Registro }, new {@target = "_blank"}));
         c.Add().Encoded(false).Sanitized(false).RenderValueAs(b => @Html.ActionLink("Detalhes", "Detalhar","Documento", new { _registroDocumento = b.Registro },""));
     }).Sortable(false).EmptyText("Nenhum documento encontrado")
 
