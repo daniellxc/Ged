@@ -51,6 +51,8 @@ namespace LAB5GED.DOMAIN.Entidades
         //[Required(ErrorMessage = "campo obrigatório")]
         //public int Prazo_guarda { get; set; }
 
+        public virtual List<Usuario> Usuarios { get; set; }
+
         #region ForeignKey
 
         [ForeignKey("Subserie_pai")]

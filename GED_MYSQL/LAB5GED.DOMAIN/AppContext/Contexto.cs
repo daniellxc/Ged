@@ -89,6 +89,16 @@ namespace LAB5GED.DOMAIN.AppContext
           u.ToTable("tb_acao_grupo");
          });
 
+           modelBuilder.Entity<Usuario>()
+               .HasMany(u => u.Subseries)
+               .WithMany(u => u.Usuarios)
+               .Map(u =>
+               {
+                   u.MapLeftKey("USUARIO");
+                   u.MapRightKey("SUBSERIE");
+                   u.ToTable("tb_subserie_usuario");
+               });
+
            //N=>1 Documento->Caixa
             modelBuilder.Entity<Documento>()
            .HasOptional(c => c.FK_Caixa)

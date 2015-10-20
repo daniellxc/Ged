@@ -45,6 +45,8 @@ namespace LAB5GED.DOMAIN.Entidades
       
         public virtual List<Grupo> Grupos{ get; set; }
 
+        public virtual List<Subserie> Subseries { get; set; }
+
         public Usuario()
         {
 
