@@ -76,7 +76,8 @@ namespace LAB5GED.MVC.Controllers
             if (id == "")
                 id = "0";
             
-            return Json(new SelectList(new SubserieBO().GetSubseriesAtivasDeUmaSerie(int.Parse(id)), "Registro", "Rotulo_subserie"));
+            //return Json(new SelectList(new SubserieBO().GetSubseriesAtivasDeUmaSerie(int.Parse(id)), "Registro", "Rotulo_subserie"));
+            return Json(new SelectList(new UsuarioBO().GetByRegistro(int.Parse(User.Identity.Name)).Subseries, "Registro", "Rotulo_subserie"));
 
         }
 
@@ -86,6 +87,8 @@ namespace LAB5GED.MVC.Controllers
                 id = "0";
 
             return Json(new SelectList(new SubserieIndiceBO().GetIndexadoresDeUmaSubserie(int.Parse(id)), "Registro", "NomeIndice"));
+
+           
 
         }
 

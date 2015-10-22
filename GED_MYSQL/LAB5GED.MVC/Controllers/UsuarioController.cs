@@ -150,6 +150,34 @@ namespace LAB5GED.MVC.Controllers
             }
             
         }
+
+        [PermissaoFiltro("Visualizar Subserie Usuario")]
+        public ActionResult GerenciarSubseriesUsuario(int _registroUsuario){
+
+            return View(_DAO.GetByRegistro(_registroUsuario));
+
+        }
+
+
+        [PermissaoFiltro("Controlar Subserie Usuario")]
+        public ActionResult ConfigurarSubseries(int _registroUsuario, int _registroSubserie, bool _adiciona)
+        {
+            try
+            {
+                 Usuario _usuario = new UsuarioBO().GetByRegistro(_registroUsuario);
+                 Subserie _subserie = new SubserieBO().GetByRegistro(_registroSubserie);
+
+                 _DAO.AdicionarUsuarioSubserie(_registroUsuario, _registroSubserie, _adiciona);
+
+                 return View("GerenciarSubseriesUsuario", _usuario);
+            }
+            catch
+            {
+                return View("GerenciarSubseriesUsuario", _registroUsuario);
+            }
+
+           
+        }
    
 
         public ActionResult ConfigurarPerfil(int _registroUsuario, int _registroGrupo, bool _adiciona)

@@ -286,6 +286,7 @@
     <Content Include="Views\DocumentoDigitalizacao\ListarDigitalizacoesArmazenadas.cshtml" />
     <Content Include="Views\DocumentoDigitalizacao\EdicaoVinculacaoImagem.cshtml" />
     <Content Include="Views\Consulta\ConsultarDocumentos.cshtml" />
+    <Content Include="Views\Usuario\GerenciarSubseriesUsuario.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

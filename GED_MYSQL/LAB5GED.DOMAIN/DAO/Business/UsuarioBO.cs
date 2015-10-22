@@ -54,6 +54,13 @@ namespace LAB5GED.DOMAIN.DAO.Business
                        
         }
 
+        public List<Subserie> GetSubseriesDisponiveis(int _registroUsuario)
+        {
+            var retorno = from subsereies in _DAO.GetContext.Subseries
+                          select subsereies;
+            return retorno.ToList<Subserie>().Except(GetByRegistro(_registroUsuario).Subseries).ToList();
+        }
+
         public void SalvarUsuario(Usuario _usuario)
         {
             try
@@ -141,6 +148,29 @@ namespace LAB5GED.DOMAIN.DAO.Business
                 throw ex;
             }
         }
+
+        public void AdicionarUsuarioSubserie(int _registroUsuario, int _registroSubserie, bool _inserir)
+        {
+            try
+            {
+                using(var _context = _DAO.GetContext)
+                {
+                    Usuario _usuario = _context.Usuarios.Find(_registroUsuario);
+                    if(_inserir)
+                        _usuario.Subseries.Add(_context.Subseries.Find(_registroSubserie));
+                    else
+                        _usuario.Subseries.Remove(_usuario.Subseries.Where(ss=>ss.Registro == _registroSubserie).First());
+
+                    _DAO.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
 
        
     }
