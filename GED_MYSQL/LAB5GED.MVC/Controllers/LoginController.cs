@@ -1,4 +1,5 @@
 ﻿using LAB5GED.DOMAIN.Acessorio;
+using LAB5GED.DOMAIN.AppContext;
 using LAB5GED.DOMAIN.DAO.Business;
 using LAB5GED.DOMAIN.Entidades;
 using LAB5GED.MVC.Acessorio;
@@ -26,23 +27,38 @@ namespace LAB5GED.MVC.Controllers
         [HttpPost]
         public ActionResult Logon(FormCollection fc)
         {
-            string erroLogon = "usuário ou senha incorreto";
-            Usuario usr = _DAO.GetUsuario(fc["login"], new Seguranca().getMD5Hash(fc["senha"]));
-            if (usr != null)
-            {
-                if (usr.Ativo)
+
+
+            //try
+            //{
+
+
+                string erroLogon = "usuário ou senha incorreto";
+                Usuario usr = _DAO.GetUsuario(fc["login"], new Seguranca().getMD5Hash(fc["senha"]));
+
+                if (usr != null)
                 {
-                    FormsAuthentication.SetAuthCookie(usr.Registro.ToString(), false);
-                    return RedirectToAction("Index", "Home");
+                    if (usr.Ativo)
+                    {
+                        FormsAuthentication.SetAuthCookie(usr.Registro.ToString(), false);
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else
+                        erroLogon = "usuário INATIVO";
+                    Logador.LogAcao(Logador.LogAcoes.Acesso, erroLogon);
                 }
-                else
-                    erroLogon = "usuário INATIVO";
                 Logador.LogAcao(Logador.LogAcoes.Acesso, erroLogon);
-            }
-            Logador.LogAcao(Logador.LogAcoes.Acesso, erroLogon);
-            ViewBag.Erro = erroLogon;
+                ViewBag.Erro = erroLogon;
                 //return View("Index");
-            return RedirectToAction("Index").ComMensagemDeErro(erroLogon);
+                return RedirectToAction("Index").ComMensagemDeErro(erroLogon);
+              
+
+               
+            //}
+            //catch (Exception ex)
+            //{
+            //    return RedirectToAction("Index").ComMensagemDeErro(ex.Message);
+            //}
         } 
 
         public ActionResult Logout()

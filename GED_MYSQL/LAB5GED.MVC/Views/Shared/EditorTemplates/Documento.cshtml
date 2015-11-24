@@ -1,7 +1,9 @@
 ﻿@model LAB5GED.DOMAIN.Entidades.Documento
 
 @{
-    SelectList subseriesAtivas = new SelectList(new LAB5GED.DOMAIN.DAO.Business.SubserieBO().GetSubseriesAtivaVinculaveisComID(), "Registro", "Rotulo_subserie");
+    //SelectList subseriesAtivas = new SelectList(new LAB5GED.DOMAIN.DAO.Business.SubserieBO().GetSubseriesAtivaVinculaveisComID(), "Registro", "Rotulo_subserie");
+
+    SelectList subseriesAtivas = new SelectList(new LAB5GED.DOMAIN.DAO.Business.UsuarioBO().GetSubseriesAtivas(int.Parse(User.Identity.Name)), "Registro", "Rotulo_subserie");
    
 }
 
