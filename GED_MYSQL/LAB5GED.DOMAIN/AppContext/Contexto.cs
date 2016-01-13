@@ -1,4 +1,5 @@
 ﻿using LAB5GED.DOMAIN.Entidades;
+
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -7,6 +8,7 @@ using System.Text;
 
 namespace LAB5GED.DOMAIN.AppContext
 {
+
    public class Contexto:DbContext
     {
         #region DbSets

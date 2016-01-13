@@ -93,7 +93,7 @@ namespace LAB5GED.DOMAIN.DAO.Business
             return source.ToList<Subserie>();
         }
 
-
+       
         
         public List<Subserie> GetSubseriesAtivaVinculaveisComID()
         {

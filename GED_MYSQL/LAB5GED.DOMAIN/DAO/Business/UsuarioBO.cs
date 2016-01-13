@@ -31,6 +31,8 @@ namespace LAB5GED.DOMAIN.DAO.Business
             return _DAO.GetAll();
         }
 
+      
+
         public Usuario GetUsuario(string _login, string _senha)
         {
             return _DAO.Find(u => u.Login == _login && u.Senha == _senha).FirstOrDefault();
@@ -59,6 +61,11 @@ namespace LAB5GED.DOMAIN.DAO.Business
             var retorno = from subsereies in _DAO.GetContext.Subseries
                           select subsereies;
             return retorno.ToList<Subserie>().Except(GetByRegistro(_registroUsuario).Subseries).ToList();
+        }
+
+        public List<Subserie> GetSubseriesAtivas(int _registroUsuario)
+        {
+            return GetByRegistro(_registroUsuario).Subseries.Where(s => s.Ativo == true).ToList();
         }
 
         public void SalvarUsuario(Usuario _usuario)

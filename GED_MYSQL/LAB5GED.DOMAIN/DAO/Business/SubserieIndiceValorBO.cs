@@ -112,7 +112,7 @@ namespace LAB5GED.DOMAIN.DAO.Business
 
         public List<SubserieIndiceValor> ListarIndexacao(int index, string valor)
         {
-            return _DAO.Find(ix => ix.Indice == index && ix.Valor == valor);
+            return _DAO.Find(ix => ix.Indice == index && ix.Valor.Contains(valor));
         }
 
         #endregion
