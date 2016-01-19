@@ -19,8 +19,8 @@ namespace LAB5GED.MVC.Controllers
 
         public ActionResult Index()
         {
-    
 
+            
             return View();
         }
 

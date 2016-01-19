@@ -26,11 +26,7 @@ namespace LAB5GED.MVC.Controllers
             return View();
         }
 
-        //[HttpPost]
-        //public PartialViewResult ConsultaAluno(string _nomeAluno)
-        //{
-        //    return PartialView("ConsultaAluno", new Sistema.Acadiesp.DAO.business.AlunoBO().GetAlunosPorNome(_nomeAluno));
-        //}
+        
 
         public PartialViewResult DocumentosDoAluno(string _matriculaAluno)
         {
@@ -38,9 +34,16 @@ namespace LAB5GED.MVC.Controllers
             return PartialView("DocumentosDoAluno", new DocumentoBO().DocumentosDeUmaMatricula(_matriculaAluno));
         }
 
-        public PartialViewResult ConsultarDocumentoIndex(int indice, string valor)
+        public PartialViewResult ConsultarDocumentoIndex(string indice, string valor, bool ckdtl)
         {
-            return PartialView("partialGridDocumento", new SubserieIndiceValorBO().ListarIndexacao(indice, valor).Select(d => d.FK_Documento).ToList());
+            if (ckdtl)
+            {
+                int _indice = int.Parse(indice);
+                return PartialView("partialGridDocumento", new SubserieIndiceValorBO().ListarIndexacao(_indice, valor).Select(d => d.FK_Documento).ToList());
+            }
+
+            return PartialView("partialGridDocumento", new DocumentoBO().Pesquisar(valor));
+            
         }
 
         [PermissaoFiltro("Consulta Detalhada")]
