@@ -1,6 +1,6 @@
 ﻿@{
     ViewBag.Title = "Consultar Documentos";
-    SelectList classes = new SelectList(new LAB5GED.DOMAIN.DAO.Business.ClasseBO().GetClassesAtivasComID(), "Registro", "Rotulo");
+    SelectList classes = new SelectList(new LAB5GED.DOMAIN.DAO.Business.UsuarioBO().GetClassesAtivasUsuario(int.Parse(User.Identity.Name)), "Registro", "Rotulo");
     
 }
 

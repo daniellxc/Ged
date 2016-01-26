@@ -55,21 +55,30 @@ namespace LAB5GED.MVC.Controllers
 
 
         #region Consultas JSONS
+
+        public List<Subserie> SubseriesDoUsuario()
+        {
+            return new UsuarioBO().GetByRegistro(int.Parse(User.Identity.Name)).Subseries;
+
+        }
         public JsonResult GetSubclasses(string id)
         {
             if (id == "")
                 id = "0";
             int classe = int.Parse(id);
-            return Json(new SelectList(new SubclasseBO().GetSubclassesAtivas().Where(s => s.Classe == classe).ToList(), "Registro", "Rotulo_subclasse"));
+           // return Json(new SelectList(new SubclasseBO().GetSubclassesAtivas().Where(s => s.Classe == classe).ToList(), "Registro", "Rotulo_subclasse"));
+            return Json(new SelectList(new UsuarioBO().GetSubclassesAtivasUsuario(int.Parse(User.Identity.Name)).Where(sc=>sc.Classe == classe), "Registro", "Rotulo_subclasse"));
 
         }
 
         public JsonResult GetSeries(string id)
         {
+
             if (id == "")
                 id = "0";
             int subclasse = int.Parse(id);
-            return Json(new SelectList(new SerieBO().GetSeriesAtivas().Where(s => s.Subclasse == subclasse).ToList(), "Registro", "Rotulo_serie"));
+            //return Json(new SelectList(new SerieBO().GetSeriesAtivas().Where(s => s.Subclasse == subclasse ).ToList(), "Registro", "Rotulo_serie"));
+            return Json(new SelectList(new UsuarioBO().GetSeriesAtivasUsuario(int.Parse(User.Identity.Name)).Where(s=>s.Subclasse == subclasse), "Registro", "Rotulo_serie"));
 
         }
 
@@ -78,9 +87,22 @@ namespace LAB5GED.MVC.Controllers
         {
             if (id == "")
                 id = "0";
+
+
+            int idserie = int.Parse(id);
             
             //return Json(new SelectList(new SubserieBO().GetSubseriesAtivasDeUmaSerie(int.Parse(id)), "Registro", "Rotulo_subserie"));
-            return Json(new SelectList(new UsuarioBO().GetByRegistro(int.Parse(User.Identity.Name)).Subseries, "Registro", "Rotulo_subserie"));
+            return Json(new SelectList(new UsuarioBO().GetSubseriesAtivas(int.Parse(User.Identity.Name)).Where(s=>s.Serie == idserie), "Registro", "Rotulo_subserie"));
+           
+        }
+
+        private int buscaPosicao(List<Subserie> list, Subserie k)
+        {
+            try { return list.FindIndex(o => o.Equals(k)); }
+            catch
+            {
+                return -1;
+            } 
 
         }
 

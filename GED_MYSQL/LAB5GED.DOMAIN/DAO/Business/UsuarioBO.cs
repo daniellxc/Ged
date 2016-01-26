@@ -1,4 +1,5 @@
 ﻿using LAB5GED.DOMAIN.Acessorio;
+using LAB5GED.DOMAIN.AppContext;
 using LAB5GED.DOMAIN.DAO.Interfaces;
 using LAB5GED.DOMAIN.Entidades;
 using System;
@@ -63,9 +64,67 @@ namespace LAB5GED.DOMAIN.DAO.Business
             return retorno.ToList<Subserie>().Except(GetByRegistro(_registroUsuario).Subseries).ToList();
         }
 
+        public List<Classe> GetClassesAtivasUsuario(int _registroUsuario)
+        {
+            Contexto contexto = _DAO.GetContext;
+
+            var query = from subseries in GetSubseriesAtivas(_registroUsuario)
+                        join series in contexto.Series
+                        on subseries.Serie equals series.Registro
+                        join subclasses in contexto.Subclasses
+                        on series.Subclasse equals subclasses.Registro
+                        join classes in contexto.Classes
+                        on subclasses.Classe equals classes.Registro
+                        where classes.Ativo == true
+                        select classes;
+
+            return query.Distinct().ToList<Classe>();
+
+        }
+
+
+        public List<Subclasse> GetSubclassesAtivasUsuario(int _registroUsuario)
+        {
+            Contexto context = _DAO.GetContext;
+
+            var query = from series in GetSeriesAtivasUsuario(_registroUsuario)
+                        join subclasses in context.Subclasses
+                        on series.Subclasse equals subclasses.Registro
+                        where subclasses.Ativo == true
+                        select subclasses;
+
+            return query.Distinct().ToList<Subclasse>();
+
+        }
+
+        public List<Serie> GetSeriesAtivasUsuario(int _registroUsuario)
+        {
+            Contexto context = _DAO.GetContext;
+         
+            
+
+            var query = from subseries in GetSubseriesAtivas(_registroUsuario)
+                        join series in context.Series
+                        on subseries.Serie equals series.Registro
+                        where series.Ativo == true
+                        select series;
+                        
+                 
+      
+         return query.Distinct().ToList<Serie>();
+
+        }
+
         public List<Subserie> GetSubseriesAtivas(int _registroUsuario)
         {
-            return GetByRegistro(_registroUsuario).Subseries.Where(s => s.Ativo == true).ToList();
+            Contexto context = _DAO.GetContext;
+          
+                var query = from subseries in GetByRegistro(_registroUsuario).Subseries
+                            where subseries.Ativo == true
+                            select new Subserie { Registro = subseries.Registro, Rotulo_subserie = subseries.Id_subserie + '-' + subseries.Rotulo_subserie, Serie = subseries.Serie };
+
+            
+            return query.ToList();
         }
 
         public void SalvarUsuario(Usuario _usuario)
