@@ -10,6 +10,6 @@
     c.Add(l => l.Extensao).Titled("Extensão");
     c.Add(l => l.Ordem).Titled("Ordem");
     c.Add().Encoded(false).Sanitized(false).RenderValueAs(b => @Html.ActionLink("Visualizar", "VisualizarDigitalizacao", "DocumentoDigitalizacao", new { _registroDocumentoDigitalizacao = b.Registro }, new { @target = "_blank" }));
-    c.Add().Encoded(false).Sanitized(false).RenderValueAs(b => @Html.ActionLink("Excluir", "ExcluirDigitalizacao", "DocumentoDigitalizacao", new { _registroDocumentoDigitalizacao = b.Registro }, ""));
+    c.Add().Encoded(false).Sanitized(false).RenderValueAs(b => @Html.ActionLink("Excluir", "ExcluirDigitalizacao", "DocumentoDigitalizacao", new { _registroDocumentoDigitalizacao = b.Registro, _returnView = ViewContext.Controller.ValueProvider.GetValue("action").RawValue }, ""));
     
 }).EmptyText("Nenhuma digitalização adicionada ao documento")

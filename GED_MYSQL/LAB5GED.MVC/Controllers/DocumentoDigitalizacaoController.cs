@@ -108,18 +108,18 @@ namespace LAB5GED.MVC.Controllers
 
         }
 
-        public ActionResult ExcluirDigitalizacao(int _registroDocumentoDigitalizacao)
+        public ActionResult ExcluirDigitalizacao(int _registroDocumentoDigitalizacao, string _returnView)
         {
             try
             {
                 DocumentoDigitalizacao _digitalizacao = _DAO.GetByRegistro(_registroDocumentoDigitalizacao);
                 int _registroDocumento = _digitalizacao.Documento;
                 _DAO.ExcluirDocumentoDigitalizacao(_digitalizacao);
-                return RedirectToAction(Request.UrlReferrer.Segments[2], new { _registroDocumento = _registroDocumento });
+                return RedirectToAction(_returnView, new { _registroDocumento = _registroDocumento });
             }
             catch (Exception ex)
             {
-                return RedirectToAction(Request.UrlReferrer.Segments[2], new { _registroDocumento = _DAO.GetByRegistro(_registroDocumentoDigitalizacao).Documento }).ComMensagemDeErro(ex.Message);
+                return RedirectToAction(_returnView, new { _registroDocumento = _DAO.GetByRegistro(_registroDocumentoDigitalizacao).Documento }).ComMensagemDeErro(ex.Message);
 
             }
 
