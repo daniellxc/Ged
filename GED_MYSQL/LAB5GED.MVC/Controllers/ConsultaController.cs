@@ -53,15 +53,22 @@ namespace LAB5GED.MVC.Controllers
         }
 
 
-
-        #region Consultas JSONS
-
         public List<Subserie> SubseriesDoUsuario()
         {
             return new UsuarioBO().GetByRegistro(int.Parse(User.Identity.Name)).Subseries;
 
         }
-        public JsonResult GetSubclasses(string id)
+        #region Consultas JSONS
+
+
+        public JsonResult GetClassesAtivas()
+        {
+            return Json(new SelectList(new ClasseBO().GetClassesAtivas(), "Registro", "Rotulo"));
+        }
+
+
+
+        public JsonResult GetSubclassesUsuarioLogado(string id)
         {
             if (id == "")
                 id = "0";
@@ -71,8 +78,24 @@ namespace LAB5GED.MVC.Controllers
 
         }
 
-        public JsonResult GetSeries(string id)
+        /// <summary>
+        /// Retorna as subclasses ativas de uma classe onde ID representa o ID da classe.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public JsonResult GetSubclassesAtivas(string id)
         {
+            int classe;
+            if(id=="")
+                classe = 0;
+            else
+                classe = int.Parse(id);
+            return Json(new SelectList(new SubclasseBO().GetSubclassesAtivas().Where(sc => sc.Classe == classe), "Registro", "Rotulo_subclasse"));
+        }
+
+        public JsonResult GetSeriesUsuarioLogado(string id)
+        {
+            
 
             if (id == "")
                 id = "0";
@@ -83,7 +106,23 @@ namespace LAB5GED.MVC.Controllers
         }
 
 
-        public JsonResult GetSubseries(string id)
+        /// <summary>
+        /// Retorna as series ativas de uma subclasse onde ID representa o ID da subclasse.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public JsonResult GetSeriesAtivas(string id)
+        {
+            int subClasse;
+            if (id == "")
+                subClasse = 0;
+            else
+                subClasse = int.Parse(id);
+            return Json(new SelectList(new SerieBO().GetSeriesAtivas().Where(sc => sc.Subclasse == subClasse), "Registro", "Rotulo_serie"));
+        }
+
+
+        public JsonResult GetSubseriesUsuarioLogado(string id)
         {
             if (id == "")
                 id = "0";

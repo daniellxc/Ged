@@ -3,6 +3,7 @@ using LAB5GED.DOMAIN.Entidades;
 using LAB5GED.MVC.Acessorio;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.SqlServer;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -160,20 +161,20 @@ namespace LAB5GED.MVC.Controllers
 
 
         [PermissaoFiltro("Controlar Subserie Usuario")]
-        public ActionResult ConfigurarSubseries(int _registroUsuario, int _registroSubserie, bool _adiciona)
+        public void ConfigurarSubseries(string _registroUsuario, string _registroSubserie, bool _adiciona)
         {
             try
             {
-                 Usuario _usuario = new UsuarioBO().GetByRegistro(_registroUsuario);
-                 Subserie _subserie = new SubserieBO().GetByRegistro(_registroSubserie);
+                 Usuario _usuario = new UsuarioBO().GetByRegistro(int.Parse(_registroUsuario));
+                 Subserie _subserie = new SubserieBO().GetByRegistro(int.Parse(_registroSubserie));
 
-                 _DAO.AdicionarUsuarioSubserie(_registroUsuario, _registroSubserie, _adiciona);
+                 _DAO.AdicionarUsuarioSubserie(_usuario.Registro, _subserie.Registro, _adiciona);
 
-                 return View("GerenciarSubseriesUsuario", _usuario);
+                // return View("GerenciarSubseriesUsuario", _usuario);
             }
             catch
             {
-                return View("GerenciarSubseriesUsuario", _registroUsuario);
+                //return View("GerenciarSubseriesUsuario", _registroUsuario);
             }
 
            
@@ -207,5 +208,27 @@ namespace LAB5GED.MVC.Controllers
             }
 
         }
+
+        public PartialViewResult ListarSubseriesDisponiveisUsuario(string _registroUsuario, string _registroSerie)
+        {
+            ViewBag.usuario = _registroUsuario;
+            List<Subserie> _model = new UsuarioBO().GetSubseriesDisponiveis(int.Parse(_registroUsuario));
+
+            if (_registroSerie == String.Empty)
+            {
+               return PartialView("PartialSubseriesDisponiveisUsuario",_model);
+            }
+            else
+            {
+                int _regSerie = int.Parse(_registroSerie);
+                return PartialView("PartialSubseriesDisponiveisUsuario", _model.Where(s => s.Serie == _regSerie).ToList());
+            }
+        }
+
+        #region JSONS
+
+        
+
+        #endregion
     }
 }

@@ -5,7 +5,7 @@
     List<LAB5GED.DOMAIN.Entidades.Subserie> _subseriesDisponiveis = new LAB5GED.DOMAIN.DAO.Business.UsuarioBO().GetSubseriesDisponiveis(Model.Registro);
 }
 <script src="~/Scripts/libscripts.js"></script>
-
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
 
 
 
@@ -22,16 +22,17 @@
     UpdateTargetId="resultado"
 }))
 
-@*form*@
+
 {
 
-    @*filtros*@
+ 
     <div class="row">
         <div class="col-lg-1">
             <div class="form-group">
                 @Html.Label("Classe")<br />
                 @Html.Label("Subclasse")<br />
                 @Html.Label("Série")
+                @Html.Hidden("_registroUsuario", Model.Registro)
 
 
 
@@ -39,58 +40,17 @@
         </div>
 
         <div class="col-lg-3">
-            @Html.DropDownList("classe", new SelectList(_classes, "Registro", "Rotulo"), "---", new { @onChange = "return BindDDL(this,subclasse,'Consulta','GetSubclasses');" })<br />
-            @Html.DropDownList("subclasse", new SelectList(string.Empty, "Value", "Text"), "", new { @onchange = "return BindDDL(this,serie,'Consulta','GetSeries');" })<br />
-            @Html.DropDownList("serie", new SelectList(string.Empty, "Value", "Text"), "")
+            @Html.DropDownList("classe", new SelectList(_classes, "Registro", "Rotulo"), "---", new { @onChange = "return BindDDL(this,subclasse,'Consulta','GetSubclassesAtivas');" })<br />
+            @Html.DropDownList("subclasse", new SelectList(string.Empty, "Value", "Text"), "", new { @onChange = "return BindDDL(this,_registroSerie,'Consulta','GetSeriesAtivas');" })<br />
+            @Html.DropDownList("_registroSerie", new SelectList(string.Empty, "Value", "Text"), "")
             <input type="submit" value="Consultar" class="btn btn-primary" />
         </div>
 
     </div>
 
-    <div class="row">
-        <div class="col-lg-6">
-            <div class="panel panel-warning">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Subséries disponíveis</h3>
-                </div>
-                <div class="panel-body">
-                    <table class="table table-striped table-hover ">
-                        @foreach (LAB5GED.DOMAIN.Entidades.Subserie _grp in _subseriesDisponiveis)
-                        {
-                            <tr>
-                                <td>@_grp.Id_subserie - @_grp.Rotulo_subserie</td>
-                                <td>@Html.ActionLink("Adicionar esta Subsérie", "ConfigurarSubseries", new { _registroUsuario = Model.Registro, _registroSubserie = @_grp.Registro, _adiciona = true })</td>
-                            </tr>
 
-                        }
-                    </table>
-                </div>
-            </div>
-        </div>
-
-
-        <div class="col-lg-6">
-
-            <div class="panel panel-success">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Subséries deste usuário</h3>
-                </div>
-                <div class="panel-body">
-                    <table class="table table-striped table-hover ">
-                        @foreach (LAB5GED.DOMAIN.Entidades.Subserie _grp in Model.Subseries)
-                        {
-                            <tr>
-                                <td>@_grp.Id_subserie - @_grp.Rotulo_subserie</td>
-                                <td>@Html.ActionLink("Remover esta Subsérie", "ConfigurarSubseries", new { _registroUsuario = Model.Registro, _registroSubserie = @_grp.Registro, _adiciona = false })</td>
-                            </tr>
-
-                        }
-                    </table>
-                </div>
-            </div>
-        </div>
-
-    </div>
+    
+    <div id="resultado"></div>
 
 
 

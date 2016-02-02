@@ -66,14 +66,14 @@
             <div class="col-lg-2">
                 <div class="form-group">
                     @Html.Label("Classe")
-                    @Html.DropDownList("classe", classes, "---", new { @onChange = "return BindDDL(this,subclasse,'Consulta','GetSubclasses');" })
+                    @Html.DropDownList("classe", classes, "---", new { @onChange = "return BindDDL(this,subclasse,'Consulta','GetSubclassesUsuarioLogado');" })
                 </div>
             </div>
 
             <div class="col-lg-2">
                 <div class="form-group">
                     @Html.Label("Subclasse")<br />
-                    @Html.DropDownList("subclasse", new SelectList(string.Empty, "Value", "Text"), "escolha uma classe", new { @onchange = "return BindDDL(this,serie,'Consulta','GetSeries');" })
+                    @Html.DropDownList("subclasse", new SelectList(string.Empty, "Value", "Text"), "escolha uma classe", new { @onchange = "return BindDDL(this,serie,'Consulta','GetSeriesUsuarioLogado');" })
                 </div>
             </div>
         </div>
@@ -82,7 +82,7 @@
             <div class="col-lg-2">
                 <div class="form-group">
                     @Html.Label("Série")<br />
-                    @Html.DropDownList("serie", new SelectList(string.Empty, "Value", "Text"), "escolha uma subclasse", new { @onchange = "return BindDDL(this,subserie,'Consulta','GetSubseries');" })
+                    @Html.DropDownList("serie", new SelectList(string.Empty, "Value", "Text"), "escolha uma subclasse", new { @onchange = "return BindDDL(this,subserie,'Consulta','GetSubseriesUsuarioLogado');" })
                 </div>
             </div>
 

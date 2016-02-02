@@ -285,6 +285,7 @@
     <Content Include="Views\DocumentoDigitalizacao\EdicaoVinculacaoImagem.cshtml" />
     <Content Include="Views\Consulta\ConsultarDocumentos.cshtml" />
     <Content Include="Views\Usuario\GerenciarSubseriesUsuario.cshtml" />
+    <Content Include="Views\Usuario\PartialSubseriesDisponiveisUsuario.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -469,7 +470,8 @@
           <IISUrl>http://localhost/ged</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
-          <CustomServerUrl>https://sistemas.iesp.edu.br/sisged</CustomServerUrl>
+          <CustomServerUrl>
+          </CustomServerUrl>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
