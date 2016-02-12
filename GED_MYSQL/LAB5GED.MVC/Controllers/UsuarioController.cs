@@ -159,16 +159,21 @@ namespace LAB5GED.MVC.Controllers
 
         }
 
-
+        [HttpPost]
         [PermissaoFiltro("Controlar Subserie Usuario")]
-        public void ConfigurarSubseries(string _registroUsuario, string _registroSubserie, bool _adiciona)
+        public void ConfigurarSubseries(string _registroUsuario, List<string> _registroSubserie, bool _adiciona)
         {
             try
             {
                  Usuario _usuario = new UsuarioBO().GetByRegistro(int.Parse(_registroUsuario));
-                 Subserie _subserie = new SubserieBO().GetByRegistro(int.Parse(_registroSubserie));
 
-                 _DAO.AdicionarUsuarioSubserie(_usuario.Registro, _subserie.Registro, _adiciona);
+                 foreach (string s in _registroSubserie)
+                 {
+                     Subserie _subserie = new SubserieBO().GetByRegistro(int.Parse(s));
+
+                     _DAO.AdicionarUsuarioSubserie(_usuario.Registro, _subserie.Registro, _adiciona);
+                 }
+                 
 
                 // return View("GerenciarSubseriesUsuario", _usuario);
             }

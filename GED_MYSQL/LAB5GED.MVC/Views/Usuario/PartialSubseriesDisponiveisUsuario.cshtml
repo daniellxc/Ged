@@ -11,54 +11,49 @@
     catch { }
    
 }
-<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+
 <script type="text/javascript">
 
     function addItem() {
+
+ 
+        
+        var subserie =     $("#disponiveis :selected").val();
+
+        configura(@_usuario.Registro.ToString(),subserie , true);
         $("#disponiveis option:selected").appendTo("#vinculadas");
+        $("#vinculadas option").attr("selected", false);
+
        
 
-        var data = JSON.stringify({
-            '_registroUsuario': 1,
-            '_registroSubseries': $("#disponiveis option:selected"),
-            '_adiciona': true
-        });
-        $.ajax({
-            type: 'POST',
-            url: '@Url.Action("ConfigurarSubseries","Usuario")', // we are calling json method
-
-        
-
-            data: data,
-            erro: function (ex) {
-                alert(ex);
-            }
-            // here we are get value of selected country and passing same value
-
-
-            //success: function (states) {
-
-            //    // states contains the JSON formatted list
-            //    // of states passed from the controller
-
-            //    $.each(states, function (i, state) {
-            //        $("#Caixa").append('<option value="' + state.Value + '">' +
-            //             state.Text + '</option>');
-            //        // here we are adding option for States
-
-            //    });
-            //},
-            //error: function (ex) {
-            //    alert('Failed to retrieve states.' + ex);
-            //}
-        });
-
-        $("#vinculadas option").attr("selected", false);
     }
 
     function remItem() {
+
+        var subserie =  $("#vinculadas option:selected").val();
         $("#vinculadas option:selected").appendTo("#disponiveis");
         $("#disponiveis option").attr("selected", false);
+        configura(@_usuario.Registro.ToString(),subserie , false);
+    }
+
+    function configura(usuario, subserie, insere) {
+        $.ajax({
+            url: '@Url.Action("ConfigurarSubseries", "Usuario")',
+            data: {
+                _registroUsuario: usuario,
+                _registroSubserie: subserie,
+                _adiciona: insere
+            },
+            type: "post",
+           
+
+            error: function (textStatus, errorThrown) {
+                alert(errorThrown);
+            },
+            success: function (data, textStatus, XMLHttpRequest) {
+                alert("OK");
+            }
+        });
     }
 
 </script>
