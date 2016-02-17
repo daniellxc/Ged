@@ -219,8 +219,8 @@ namespace LAB5GED.DOMAIN.DAO.Business
         {
             try
             {
-                using(var _context = _DAO.GetContext)
-                {
+                Contexto _context = _DAO.GetContext;
+                
                     Usuario _usuario = _context.Usuarios.Find(_registroUsuario);
                     if(_inserir)
                         _usuario.Subseries.Add(_context.Subseries.Find(_registroSubserie));
@@ -228,7 +228,7 @@ namespace LAB5GED.DOMAIN.DAO.Business
                         _usuario.Subseries.Remove(_usuario.Subseries.Where(ss=>ss.Registro == _registroSubserie).First());
 
                     _DAO.SaveChanges();
-                }
+                
             }
             catch (Exception ex)
             {

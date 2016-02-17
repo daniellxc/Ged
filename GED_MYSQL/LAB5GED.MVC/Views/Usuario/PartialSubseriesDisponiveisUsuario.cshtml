@@ -15,43 +15,50 @@
 <script type="text/javascript">
 
     function addItem() {
-
- 
         
-        var subserie =     $("#disponiveis :selected").val();
+        var subserie = [];
+
+        $("#disponiveis :selected").each(function(i,selected){
+            subserie[i] = $(selected).val();
+        });
 
         configura(@_usuario.Registro.ToString(),subserie , true);
         $("#disponiveis option:selected").appendTo("#vinculadas");
         $("#vinculadas option").attr("selected", false);
-
-       
-
     }
 
     function remItem() {
 
-        var subserie =  $("#vinculadas option:selected").val();
+        var subserie = [];
+
+        $("#vinculadas :selected").each(function(i,selected){
+            subserie[i] = $(selected).val();
+        });
+
+        configura(@_usuario.Registro.ToString(),subserie , false);
         $("#vinculadas option:selected").appendTo("#disponiveis");
         $("#disponiveis option").attr("selected", false);
-        configura(@_usuario.Registro.ToString(),subserie , false);
+        
     }
 
     function configura(usuario, subserie, insere) {
         $.ajax({
             url: '@Url.Action("ConfigurarSubseries", "Usuario")',
+            traditional: true,
             data: {
                 _registroUsuario: usuario,
                 _registroSubserie: subserie,
                 _adiciona: insere
             },
             type: "post",
+            
            
 
             error: function (textStatus, errorThrown) {
                 alert(errorThrown);
             },
             success: function (data, textStatus, XMLHttpRequest) {
-                alert("OK");
+         
             }
         });
     }
