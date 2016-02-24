@@ -42,7 +42,8 @@
         <div class="col-lg-3">
             @Html.DropDownList("classe", new SelectList(_classes, "Registro", "Rotulo"), "---", new { @onChange = "return BindDDL(this,subclasse,'Consulta','GetSubclassesAtivas');" })<br />
             @Html.DropDownList("subclasse", new SelectList(string.Empty, "Value", "Text"), "", new { @onChange = "return BindDDL(this,_registroSerie,'Consulta','GetSeriesAtivas');" })<br />
-            @Html.DropDownList("_registroSerie", new SelectList(string.Empty, "Value", "Text"), "")
+            @Html.DropDownList("_registroSerie", new SelectList(string.Empty, "Value", "Text"), "")<br />
+            <input class="btn btn-primary" type="button" onclick="location.href='@Url.Action("Index","Usuario")'" value="Voltar" />&nbsp;
             <input type="submit" value="Consultar" class="btn btn-primary" />
         </div>
 
@@ -57,4 +58,3 @@
 }
 
 
-<input class="btn btn-primary" type="button" onclick="location.href='@Url.Action("Index","Usuario")'" value="Voltar" />

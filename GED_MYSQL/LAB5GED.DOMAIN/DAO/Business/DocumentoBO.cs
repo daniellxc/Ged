@@ -345,6 +345,28 @@ namespace LAB5GED.DOMAIN.DAO.Business
         }
 
 
+        public List<Documento> PesquisarDocumentosUsuario(string chave, int registroUsuario)
+        {
+            Contexto contexto = _DAO.GetContext;
+
+
+            var retorno = from valorIndice in contexto.SubserieIndiceValores
+                          join indice in contexto.SubserieIndices
+                          on valorIndice.Indice equals indice.Registro
+                          join subserie in contexto.Usuarios.Where(u=>u.Registro == registroUsuario).SelectMany(u=>u.Subseries)
+                          on indice.Subserie equals subserie.Registro
+                          join documento in contexto.Documentos
+                          on subserie.Registro equals documento.Subserie
+                          where valorIndice.Documento == documento.Registro &&
+                          valorIndice.Valor.Contains(chave) || documento.Descricao.Contains(chave) 
+                  
+                          select documento;
+
+
+            return retorno.Distinct().ToList<Documento>();
+        }
+
+
 
  
         #endregion

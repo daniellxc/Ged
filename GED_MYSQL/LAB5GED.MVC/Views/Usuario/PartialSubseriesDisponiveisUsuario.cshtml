@@ -25,6 +25,7 @@
         configura(@_usuario.Registro.ToString(),subserie , true);
         $("#disponiveis option:selected").appendTo("#vinculadas");
         $("#vinculadas option").attr("selected", false);
+      
     }
 
     function remItem() {
@@ -73,7 +74,7 @@
             </div>
             <div class="panel-body">
 
-                @Html.ListBox("disponiveis", new MultiSelectList(Model,"Registro","Rotulo_subserie"))
+                @Html.ListBox("disponiveis", new MultiSelectList(Model, "Registro", "Rotulo_subserie"), new { @Style = "Width:100%;Height:100%", @Class = "form-control" })<br />
                 @*<table class="table table-striped table-hover ">
                     @foreach (LAB5GED.DOMAIN.Entidades.Subserie _grp in Model)
                     {
@@ -85,7 +86,7 @@
 
                     }
                 </table>*@
-                <input type="button"  value=">>>" onclick="addItem();" />
+                <input type="button"  value="Adicionar" onclick="addItem();" />
             </div>
         </div>
     </div>
@@ -99,9 +100,10 @@
             </div>
             <div class="panel-body">
 
-                <input type="button" value="<<<" onclick="remItem();" />
+              
 
-                @Html.ListBox("vinculadas", new MultiSelectList(_usuario.Subseries, "Registro", "Rotulo_subserie"))
+                @Html.ListBox("vinculadas", new MultiSelectList(_usuario.Subseries, "Registro", "Rotulo_subserie"), new {@Style="Width:100%" }) <br />
+                <input type="button" value="Remover" onclick="remItem();" />
                 @*<table class="table table-striped table-hover ">
                     @foreach (LAB5GED.DOMAIN.Entidades.Subserie _grp in _usuario.Subseries)
                     {

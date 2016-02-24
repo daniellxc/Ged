@@ -42,9 +42,11 @@ namespace LAB5GED.MVC.Controllers
                 return PartialView("partialGridDocumento", new SubserieIndiceValorBO().ListarIndexacao(_indice, valor).Select(d => d.FK_Documento).ToList());
             }
 
-            return PartialView("partialGridDocumento", new DocumentoBO().Pesquisar(valor));
+            return PartialView("partialGridDocumento", new DocumentoBO().PesquisarDocumentosUsuario(valor, int.Parse(User.Identity.Name)));
             
         }
+
+
 
         [PermissaoFiltro("Consulta Detalhada")]
         public ActionResult ConsultarDocumentos()
@@ -55,7 +57,7 @@ namespace LAB5GED.MVC.Controllers
 
         public List<Subserie> SubseriesDoUsuario()
         {
-            return new UsuarioBO().GetByRegistro(int.Parse(User.Identity.Name)).Subseries;
+            return new UsuarioBO().GetByRegistro(int.Parse(User.Identity.Name)).Subseries.ToList();
 
         }
         #region Consultas JSONS

@@ -139,7 +139,9 @@ namespace LAB5GED.DOMAIN.DAO.Business
 
         public string TratarIdSubSerie(Subserie _subSerie)
         {
-            string IDAux = _subSerie.Id_subserie.Replace('.', ' ').Substring(0, _subSerie.Id_subserie.Length - 1).Trim();
+            //string IDAux = _subSerie.Id_subserie.Replace('.', ' ').Substring(0, _subSerie.Id_subserie.Length - 1).Trim();
+            string[] stSplit = _subSerie.Id_subserie.Split('.');
+            string IDAux = stSplit[0];
             Serie serie = new SerieBO().GetByRegistro(_subSerie.Serie);
             if (SubserieFilha(_subSerie))
             {
