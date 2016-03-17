@@ -140,5 +140,34 @@ namespace LAB5GED.DOMAIN.DAO.Business
 
        #endregion
 
+
+       public void MudarCaixaDocumento(int _registroDocumento, int _registroCaixaDestino)
+       {
+           try
+           {
+               DocumentoBO docBO = new DocumentoBO();
+               CaixaBO cxBO = new CaixaBO();
+               Caixa cxNova = cxBO.GetByRegistro(_registroCaixaDestino);
+               Documento doc = docBO.GetByRegistro(_registroDocumento);
+               if (cxNova.Subserie.Equals(doc.Subserie))
+               {
+                   doc.Caixa = _registroCaixaDestino;
+                   docBO.SalvarDocumento(doc);
+               }
+
+           }
+           catch (DbEntityValidationException dbex)
+           {
+               throw new Erros.ErroDeValidacao(dbex);
+           }
+           catch (DbUpdateException dbuex)
+           {
+               throw new Erros.ErroGeral("Não foi possível concluir a operação. Verifique se o item não foi cadastrado previamente.");
+           }
+           catch (Exception ex)
+           {
+               throw new Erros.ErroGeral("Erro inesperado. " + ex.Message);
+           }
+       }
     }
 }

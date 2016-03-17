@@ -1,0 +1,26 @@
+﻿@model  LAB5GED.DOMAIN.Entidades.Documento 
+
+@{
+   SelectList caixas = new SelectList(new LAB5GED.DOMAIN.DAO.Business.CaixaBO().GetCaixasAbertasPorSubserie(Model.Subserie).Where(c=>c.Registro != Model.Caixa),"Registro","IdCaixa");
+}
+<script src="~/Scripts/libscripts.js"></script>
+<h3>Mudança de Caixa</h3>
+@Html.Partial("partialInfoDocumento", Model)
+
+@using (Html.BeginForm("MudarCaixa", "Documento", new { _registroDocumento = Model.Registro }))
+{
+    <div class="row">
+
+        <div class="col-lg-3">
+            <div class="form">
+                <div class="form-group">
+                    <label>Selecione a caixa de destino</label>
+                    @Html.DropDownList("_registroCaixaDestino", caixas, new { @class = "form-control" }) <br />
+                </div>
+                <input type="button" value="Voltar" onclick="return Voltar();" class="btn btn-primary" />
+                <input type="submit" value="Confirmar" class="btn btn-primary" />
+
+            </div>
+        </div>
+    </div>
+}

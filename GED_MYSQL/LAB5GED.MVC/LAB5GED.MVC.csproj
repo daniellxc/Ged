@@ -286,6 +286,7 @@
     <Content Include="Views\Consulta\ConsultarDocumentos.cshtml" />
     <Content Include="Views\Usuario\GerenciarSubseriesUsuario.cshtml" />
     <Content Include="Views\Usuario\PartialSubseriesDisponiveisUsuario.cshtml" />
+    <Content Include="Views\Documento\MudancaCaixa.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -215,6 +215,29 @@ namespace LAB5GED.MVC.Controllers
             }
 
         }
+        [PermissaoFiltro("MudancaCaixa")]
+        public ActionResult MudancaCaixa(int _registroDocumento)
+        {
+            
+            return View(_DAO.GetByRegistro(_registroDocumento));
+        }
+
+        public ActionResult MudarCaixa(int _registroDocumento, int _registroCaixaDestino)
+        {
+            try
+            {
+                int caixaAntiga = _DAO.GetByRegistro(_registroDocumento).Caixa;
+
+                new CaixaBO().MudarCaixaDocumento(_registroDocumento,_registroCaixaDestino);
+                Logador.LogAcao(Logador.LogAcoes.Salvar,"caixaAnterior:"+caixaAntiga.ToString()+"caixaDestino:"+_registroCaixaDestino.ToString());
+                return RedirectToAction("MudancaCaixa", new { _registroDocumento = _registroDocumento }).ComMensagemDeSucesso("Alteração realizada com sucesso!");
+
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("MudancaCaixa", new { _registroDocumento = _registroDocumento }).ComMensagemDeErro(ex.Message);
+            }
+        }
 
         public ActionResult DocumentosNaoArmazenados()
         {

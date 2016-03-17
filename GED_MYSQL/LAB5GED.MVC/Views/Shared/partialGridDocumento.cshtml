@@ -12,6 +12,7 @@
         c.Add().Titled("Revisado").Encoded(false).Sanitized(false).RenderValueAs(cl => CustomRenderingOfColumn(cl));
         c.Add().Encoded(false).Sanitized(false).RenderValueAs(b => @Html.ActionLink("Visualizar", "ListarDigitalizacoesArmazenadas", "DocumentoDigitalizacao", new { _registroDocumento = b.Registro }, new {@target = "_blank"}));
         c.Add().Encoded(false).Sanitized(false).RenderValueAs(b => @Html.ActionLink("Detalhes", "Detalhar","Documento", new { _registroDocumento = b.Registro },""));
+        c.Add().Encoded(false).Sanitized(false).RenderValueAs(b => @Html.ActionLink("Mudar Caixa", "MudancaCaixa", "Documento", new { _registroDocumento = b.Registro }, ""));
     }).Sortable(false).EmptyText("Nenhum documento encontrado")
 
 @helper CustomRenderingOfColumn(LAB5GED.DOMAIN.Entidades.Documento item)
